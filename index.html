@@ -5,1055 +5,455 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Enrolliq — Recruitment Intelligence for Clinical Trials</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #0a0e1a;
-    --ink-soft: #1c2235;
-    --ink-muted: #2e3650;
-    --gold: #c9a84c;
-    --gold-light: #e8c96a;
-    --gold-dim: rgba(201,168,76,0.12);
-    --teal: #2dd4bf;
-    --teal-dim: rgba(45,212,191,0.1);
-    --cream: #f5f0e8;
-    --cream-soft: #faf8f4;
-    --gray: #8892a4;
-    --gray-light: #c4cad6;
-    --border: rgba(255,255,255,0.07);
-    --border-gold: rgba(201,168,76,0.25);
-    --serif: 'DM Serif Display', Georgia, serif;
-    --sans: 'DM Sans', system-ui, sans-serif;
-    --mono: 'JetBrains Mono', monospace;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: var(--sans);
-    background: var(--ink);
-    color: var(--cream);
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
-
-  /* ─── NOISE OVERLAY ─── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    opacity: 0.4;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 22px 60px;
-    background: rgba(10,14,26,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none;
-  }
-  .nav-logo-mark {
-    width: 34px; height: 34px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--serif); font-size: 16px; color: var(--ink); font-weight: 700;
-  }
-  .nav-logo-text {
-    font-family: var(--serif); font-size: 20px; color: var(--cream);
-    letter-spacing: -0.3px;
-  }
-  .nav-logo-text span { color: var(--gold); }
-
-  .nav-links {
-    display: flex; align-items: center; gap: 36px; list-style: none;
-  }
-  .nav-links a {
-    color: var(--gray); text-decoration: none; font-size: 14px; font-weight: 500;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--cream); }
-
-  .nav-cta {
-    background: var(--gold); color: var(--ink);
-    padding: 9px 22px; border-radius: 6px;
-    font-size: 13px; font-weight: 600; text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-    white-space: nowrap;
-  }
-  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
-    padding: 120px 24px 80px;
-    position: relative; overflow: hidden;
-  }
-
-  .hero-glow {
-    position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
-    width: 800px; height: 800px;
-    background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-glow-2 {
-    position: absolute; bottom: -10%; right: -10%;
-    width: 500px; height: 500px;
-    background: radial-gradient(ellipse, rgba(45,212,191,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    border: 1px solid var(--border-gold);
-    background: var(--gold-dim);
-    padding: 6px 16px; border-radius: 100px;
-    font-size: 12px; font-weight: 600; color: var(--gold);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 32px;
-    animation: fadeUp 0.6s ease both;
-  }
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--gold);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.7); }
-  }
-
-  .hero h1 {
-    font-family: var(--serif);
-    font-size: clamp(42px, 7vw, 88px);
-    line-height: 1.05;
-    letter-spacing: -2px;
-    color: var(--cream);
-    max-width: 900px;
-    animation: fadeUp 0.7s 0.1s ease both;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-sub {
-    font-size: clamp(16px, 2vw, 19px);
-    color: var(--gray);
-    max-width: 580px;
-    margin-top: 24px;
-    line-height: 1.7;
-    font-weight: 300;
-    animation: fadeUp 0.7s 0.2s ease both;
-  }
-
-  .hero-stats {
-    display: flex; gap: 48px; margin-top: 56px;
-    animation: fadeUp 0.7s 0.3s ease both;
-  }
-
-  .hero-stat {
-    text-align: center;
-  }
-  .hero-stat-num {
-    font-family: var(--serif); font-size: 42px; color: var(--gold);
-    line-height: 1;
-  }
-  .hero-stat-label {
-    font-size: 12px; color: var(--gray); font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 6px;
-  }
-  .hero-stat-divider {
-    width: 1px; background: var(--border); align-self: stretch;
-  }
-
-  .hero-actions {
-    display: flex; gap: 14px; margin-top: 48px; align-items: center;
-    animation: fadeUp 0.7s 0.4s ease both;
-  }
-
-  .btn-primary {
-    background: var(--gold);
-    color: var(--ink);
-    padding: 14px 32px; border-radius: 8px;
-    font-size: 15px; font-weight: 600; text-decoration: none;
-    transition: all 0.2s;
-    border: none; cursor: pointer; font-family: var(--sans);
-  }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.25); }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--cream);
-    padding: 14px 32px; border-radius: 8px;
-    font-size: 15px; font-weight: 500; text-decoration: none;
-    border: 1px solid var(--border);
-    transition: all 0.2s; cursor: pointer; font-family: var(--sans);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .btn-ghost:hover { border-color: var(--gray-light); color: var(--cream); background: rgba(255,255,255,0.04); }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ─── TICKER ─── */
-  .ticker-wrap {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    overflow: hidden; padding: 14px 0;
-    background: rgba(255,255,255,0.02);
-  }
-  .ticker {
-    display: flex; gap: 64px; animation: ticker 30s linear infinite;
-    white-space: nowrap;
-  }
-  .ticker-item {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 12px; font-weight: 500; color: var(--gray);
-    letter-spacing: 0.05em; text-transform: uppercase;
-    flex-shrink: 0;
-  }
-  .ticker-item::before { content: '◆'; color: var(--gold); font-size: 8px; }
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  /* ─── SECTION LAYOUT ─── */
-  section { position: relative; z-index: 1; }
-  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-
-  .section-label {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 11px; font-weight: 600; color: var(--gold);
-    letter-spacing: 0.1em; text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
-
-  .section-title {
-    font-family: var(--serif);
-    font-size: clamp(32px, 4vw, 52px);
-    line-height: 1.1;
-    letter-spacing: -1px;
-    color: var(--cream);
-    margin-bottom: 16px;
-  }
-  .section-title em { font-style: italic; color: var(--gold); }
-
-  .section-body {
-    font-size: 17px; color: var(--gray); line-height: 1.75;
-    max-width: 560px; font-weight: 300;
-  }
-
-  /* ─── PROBLEM ─── */
-  .problem {
-    padding: 120px 0;
-  }
-
-  .problem-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
-    align-items: center; margin-top: 64px;
-  }
-
-  .problem-cards {
-    display: flex; flex-direction: column; gap: 16px;
-  }
-
-  .problem-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px 28px;
-    position: relative; overflow: hidden;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .problem-card:hover { border-color: rgba(201,168,76,0.3); background: rgba(255,255,255,0.05); }
-  .problem-card::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-    background: var(--gold); border-radius: 3px 0 0 3px;
-    opacity: 0.6;
-  }
-
-  .problem-card-icon { font-size: 22px; margin-bottom: 10px; }
-  .problem-card-title {
-    font-size: 15px; font-weight: 600; color: var(--cream); margin-bottom: 6px;
-  }
-  .problem-card-text {
-    font-size: 13.5px; color: var(--gray); line-height: 1.6;
-  }
-
-  .problem-stat-block {
-    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(45,212,191,0.05));
-    border: 1px solid var(--border-gold);
-    border-radius: 16px; padding: 48px;
-    text-align: center;
-  }
-  .problem-stat-big {
-    font-family: var(--serif); font-size: 96px; color: var(--gold);
-    line-height: 1; display: block;
-  }
-  .problem-stat-desc {
-    font-size: 16px; color: var(--gray); margin-top: 16px; line-height: 1.6;
-  }
-  .problem-stat-desc strong { color: var(--cream); }
-
-  /* ─── PLATFORM PREVIEW ─── */
-  .platform {
-    padding: 120px 0;
-    background: linear-gradient(180deg, transparent 0%, rgba(201,168,76,0.03) 50%, transparent 100%);
-  }
-
-  .platform-header { text-align: center; margin-bottom: 64px; }
-  .platform-header .section-body { margin: 0 auto; text-align: center; }
-
-  .platform-tabs {
-    display: flex; gap: 8px; margin-bottom: 32px; justify-content: center;
-    flex-wrap: wrap;
-  }
-  .platform-tab {
-    padding: 8px 20px; border-radius: 100px;
-    font-size: 13px; font-weight: 500; cursor: pointer;
-    border: 1px solid var(--border); color: var(--gray);
-    background: transparent; transition: all 0.2s;
-    font-family: var(--sans);
-  }
-  .platform-tab.active, .platform-tab:hover {
-    border-color: var(--gold); color: var(--gold);
-    background: var(--gold-dim);
-  }
-
-  /* ─── APP MOCKUP ─── */
-  .app-mockup {
-    background: var(--ink-soft);
-    border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
-  }
-
-  .app-topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(255,255,255,0.02);
-  }
-  .app-dots { display: flex; gap: 6px; }
-  .app-dot {
-    width: 10px; height: 10px; border-radius: 50%;
-  }
-  .app-dot:nth-child(1) { background: #ff5f57; }
-  .app-dot:nth-child(2) { background: #febc2e; }
-  .app-dot:nth-child(3) { background: #28c840; }
-
-  .app-title-bar {
-    font-family: var(--mono); font-size: 12px; color: var(--gray);
-  }
-
-  .app-body {
-    display: grid; grid-template-columns: 220px 1fr;
-    min-height: 520px;
-  }
-
-  .app-sidebar {
-    border-right: 1px solid var(--border);
-    padding: 20px 16px;
-    background: rgba(255,255,255,0.01);
-  }
-
-  .app-sidebar-logo {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 10px; margin-bottom: 24px;
-  }
-  .app-sidebar-logo-mark {
-    width: 28px; height: 28px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-light));
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--serif); font-size: 13px; color: var(--ink); font-weight: 700;
-  }
-  .app-sidebar-logo-text {
-    font-family: var(--serif); font-size: 16px; color: var(--cream);
-  }
-
-  .app-nav-section {
-    font-size: 10px; font-weight: 600; color: var(--gray);
-    letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0 10px; margin-bottom: 6px; margin-top: 16px;
-  }
-
-  .app-nav-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 10px; border-radius: 6px;
-    font-size: 13px; color: var(--gray);
-    cursor: pointer; transition: all 0.15s; margin-bottom: 2px;
-  }
-  .app-nav-item:hover, .app-nav-item.active {
-    background: rgba(255,255,255,0.05); color: var(--cream);
-  }
-  .app-nav-item.active { background: var(--gold-dim); color: var(--gold); }
-  .app-nav-icon { font-size: 14px; width: 18px; text-align: center; }
-
-  .app-main { padding: 24px; }
-
-  .app-page-title {
-    font-family: var(--serif); font-size: 22px; color: var(--cream);
-    margin-bottom: 4px;
-  }
-  .app-page-sub { font-size: 12px; color: var(--gray); margin-bottom: 24px; }
-
-  .app-kpi-row {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-    margin-bottom: 24px;
-  }
-  .app-kpi {
-    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px;
-    position: relative; overflow: hidden;
-  }
-  .app-kpi::after {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    border-radius: 10px 10px 0 0;
-  }
-  .app-kpi:nth-child(1)::after { background: var(--gold); }
-  .app-kpi:nth-child(2)::after { background: var(--teal); }
-  .app-kpi:nth-child(3)::after { background: #818cf8; }
-  .app-kpi:nth-child(4)::after { background: #f472b6; }
-
-  .app-kpi-label { font-size: 10px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-  .app-kpi-value { font-family: var(--serif); font-size: 28px; color: var(--cream); line-height: 1; }
-  .app-kpi-delta { font-size: 11px; color: #4ade80; margin-top: 4px; }
-
-  .app-charts {
-    display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px;
-  }
-
-  .app-chart-card {
-    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-    border-radius: 10px; padding: 18px;
-  }
-  .app-chart-title { font-size: 12px; font-weight: 600; color: var(--cream); margin-bottom: 16px; }
-
-  .funnel-bars { display: flex; flex-direction: column; gap: 10px; }
-  .funnel-row {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .funnel-label { font-size: 11px; color: var(--gray); width: 120px; flex-shrink: 0; }
-  .funnel-bar-wrap { flex: 1; background: rgba(255,255,255,0.05); border-radius: 3px; height: 8px; }
-  .funnel-bar { height: 100%; border-radius: 3px; }
-  .funnel-count { font-size: 11px; color: var(--cream); font-family: var(--mono); width: 30px; text-align: right; flex-shrink: 0; }
-
-  .conversion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .conv-item {
-    background: rgba(255,255,255,0.03); border-radius: 8px; padding: 12px;
-    text-align: center;
-  }
-  .conv-pct { font-family: var(--serif); font-size: 24px; color: var(--teal); }
-  .conv-label { font-size: 10px; color: var(--gray); margin-top: 2px; }
-
-  /* ─── HOW IT WORKS ─── */
-  .how {
-    padding: 120px 0;
-  }
-
-  .how-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
-    margin-top: 64px;
-  }
-
-  .how-card {
-    position: relative;
-    background: rgba(255,255,255,0.025);
-    border: 1px solid var(--border);
-    border-radius: 16px; padding: 36px 32px;
-    transition: all 0.3s;
-  }
-  .how-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--border-gold);
-    background: rgba(255,255,255,0.04);
-  }
-
-  .how-step {
-    font-family: var(--mono); font-size: 11px;
-    color: var(--gold); letter-spacing: 0.1em;
-    margin-bottom: 16px;
-  }
-
-  .how-card-icon {
-    width: 52px; height: 52px; border-radius: 12px;
-    background: var(--gold-dim); border: 1px solid var(--border-gold);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px; margin-bottom: 20px;
-  }
-
-  .how-card-title {
-    font-family: var(--serif); font-size: 22px; color: var(--cream);
-    margin-bottom: 12px; line-height: 1.2;
-  }
-
-  .how-card-text {
-    font-size: 14px; color: var(--gray); line-height: 1.7;
-  }
-
-  .how-connector {
-    display: none;
-  }
-
-  /* ─── FEATURES ─── */
-  .features {
-    padding: 120px 0;
-    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.015) 50%, transparent);
-  }
-
-  .features-header { text-align: center; margin-bottom: 72px; }
-  .features-header .section-body { margin: 0 auto; text-align: center; }
-
-  .features-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden;
-  }
-
-  .feature-cell {
-    background: var(--ink);
-    padding: 40px 36px;
-    transition: background 0.2s;
-  }
-  .feature-cell:hover { background: rgba(201,168,76,0.04); }
-
-  .feature-icon {
-    font-size: 28px; margin-bottom: 18px; display: block;
-  }
-  .feature-title {
-    font-size: 16px; font-weight: 600; color: var(--cream);
-    margin-bottom: 10px;
-  }
-  .feature-text {
-    font-size: 13.5px; color: var(--gray); line-height: 1.65;
-  }
-
-  /* ─── INTEGRATION ─── */
-  .integrations {
-    padding: 100px 0;
-    text-align: center;
-  }
-
-  .integrations-grid {
-    display: flex; justify-content: center; align-items: center;
-    gap: 16px; margin-top: 48px; flex-wrap: wrap;
-  }
-
-  .integration-badge {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 10px 22px;
-    font-size: 13px; font-weight: 500; color: var(--gray);
-    transition: all 0.2s;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .integration-badge:hover { border-color: var(--border-gold); color: var(--cream); }
-  .integration-badge.coming { opacity: 0.5; }
-  .integration-badge-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #4ade80;
-  }
-  .integration-badge.coming .integration-badge-dot { background: var(--gray); }
-
-  .integrations-note {
-    margin-top: 32px; font-size: 13px; color: var(--gray);
-  }
-  .integrations-note strong { color: var(--cream); }
-
-  /* ─── FOUNDER ─── */
-  .founder {
-    padding: 120px 0;
-  }
-
-  .founder-card {
-    display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px;
-    align-items: center;
-    background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(45,212,191,0.03));
-    border: 1px solid var(--border-gold);
-    border-radius: 24px; padding: 64px;
-  }
-
-  .founder-visual {
-    text-align: center;
-  }
-
-  .founder-avatar {
-    width: 180px; height: 180px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold-dim), rgba(45,212,191,0.1));
-    border: 2px solid var(--border-gold);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--serif); font-size: 64px; color: var(--gold);
-    margin: 0 auto 24px;
-  }
-
-  .founder-name {
-    font-family: var(--serif); font-size: 24px; color: var(--cream);
-    margin-bottom: 4px;
-  }
-  .founder-role {
-    font-size: 13px; color: var(--gold); font-weight: 500; margin-bottom: 16px;
-  }
-
-  .founder-badges {
-    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
-  }
-  .founder-badge {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-    padding: 4px 12px; border-radius: 100px;
-    font-size: 11px; color: var(--gray);
-  }
-
-  .founder-content {}
-  .founder-quote {
-    font-family: var(--serif); font-size: 22px; color: var(--cream);
-    line-height: 1.5; margin-bottom: 24px; font-style: italic;
-  }
-  .founder-quote::before { content: '"'; color: var(--gold); font-size: 48px; line-height: 0; vertical-align: -16px; margin-right: 4px; }
-
-  .founder-bio {
-    font-size: 15px; color: var(--gray); line-height: 1.75; margin-bottom: 32px;
-  }
-
-  .founder-links {
-    display: flex; gap: 12px;
-  }
-
-  /* ─── WAITLIST ─── */
-  .waitlist {
-    padding: 120px 0;
-    text-align: center;
-    position: relative; overflow: hidden;
-  }
-
-  .waitlist::before {
-    content: '';
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 600px; height: 600px;
-    background: radial-gradient(ellipse, rgba(201,168,76,0.07) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .waitlist h2 {
-    font-family: var(--serif);
-    font-size: clamp(36px, 5vw, 64px);
-    line-height: 1.1; letter-spacing: -1.5px;
-    margin-bottom: 20px;
-  }
-  .waitlist h2 em { font-style: italic; color: var(--gold); }
-
-  .waitlist-sub {
-    font-size: 17px; color: var(--gray); max-width: 480px; margin: 0 auto 48px;
-    font-weight: 300; line-height: 1.7;
-  }
-
-  .waitlist-form {
-    display: flex; gap: 10px; max-width: 480px; margin: 0 auto;
-  }
-
-  .waitlist-input {
-    flex: 1;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px 18px;
-    font-size: 14px; color: var(--cream);
-    font-family: var(--sans);
-    outline: none; transition: border-color 0.2s;
-  }
-  .waitlist-input::placeholder { color: var(--gray); }
-  .waitlist-input:focus { border-color: var(--gold); }
-
-  .waitlist-submit {
-    background: var(--gold); color: var(--ink);
-    padding: 14px 28px; border-radius: 8px;
-    font-size: 14px; font-weight: 600; border: none; cursor: pointer;
-    font-family: var(--sans); white-space: nowrap;
-    transition: all 0.2s;
-  }
-  .waitlist-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-  .waitlist-note {
-    font-size: 12px; color: var(--gray); margin-top: 16px;
-  }
-
-  .waitlist-success {
-    display: none;
-    background: var(--gold-dim); border: 1px solid var(--border-gold);
-    border-radius: 10px; padding: 20px 28px;
-    font-size: 14px; color: var(--gold); font-weight: 500;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 48px 0; text-align: center;
-  }
-
-  .footer-logo {
-    font-family: var(--serif); font-size: 28px; color: var(--cream);
-    margin-bottom: 8px;
-  }
-  .footer-logo span { color: var(--gold); }
-
-  .footer-tagline { font-size: 13px; color: var(--gray); margin-bottom: 32px; }
-
-  .footer-links {
-    display: flex; gap: 32px; justify-content: center;
-    list-style: none; margin-bottom: 32px;
-  }
-  .footer-links a { font-size: 13px; color: var(--gray); text-decoration: none; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--cream); }
-
-  .footer-copy { font-size: 12px; color: var(--ink-muted); color: var(--gray); opacity: 0.5; }
-
-  /* ─── SCROLL REVEAL ─── */
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1; transform: translateY(0);
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    nav { padding: 18px 24px; }
-    .nav-links { display: none; }
-    .hero-stats { gap: 24px; }
-    .problem-grid { grid-template-columns: 1fr; gap: 40px; }
-    .how-grid { grid-template-columns: 1fr; }
-    .features-grid { grid-template-columns: 1fr 1fr; }
-    .app-body { grid-template-columns: 1fr; }
-    .app-sidebar { display: none; }
-    .app-kpi-row { grid-template-columns: 1fr 1fr; }
-    .app-charts { grid-template-columns: 1fr; }
-    .founder-card { grid-template-columns: 1fr; padding: 36px; gap: 40px; }
-    .waitlist-form { flex-direction: column; }
-  }
-
-  @media (max-width: 600px) {
-    .features-grid { grid-template-columns: 1fr; }
-    .hero-actions { flex-direction: column; }
-    .hero-stats { flex-direction: column; gap: 20px; }
-    .hero-stat-divider { display: none; }
-  }
+:root {
+  --ink:#080c18;--ink2:#0f1424;--ink3:#161c30;--ink4:#1e2640;
+  --gold:#c8a951;--goldl:#e2c97e;--golddim:rgba(200,169,81,.10);--goldbdr:rgba(200,169,81,.22);
+  --teal:#34d4be;--tealdim:rgba(52,212,190,.08);
+  --lav:#a78bfa;--rose:#f472b6;--grn:#4ade80;--amb:#fbbf24;
+  --cream:#f0ead8;--cream2:#d4cbb8;--gray:#7a849a;--grayl:#a8b2c4;
+  --bdr:rgba(255,255,255,.06);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'Fira Code',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--ink);color:var(--cream);overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::after{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.45}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 56px;background:rgba(8,12,24,.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr)}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.lmark{width:32px;height:32px;border-radius:7px;background:linear-gradient(135deg,var(--gold),var(--goldl));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink)}
+.ltext{font-family:var(--serif);font-size:22px;color:var(--cream);letter-spacing:-.3px}
+.ltext span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:34px;list-style:none}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:13.5px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--cream)}
+.nav-btn{background:var(--gold);color:var(--ink);padding:9px 22px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;letter-spacing:.02em;transition:background .2s,transform .15s}
+.nav-btn:hover{background:var(--goldl);transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 24px 80px;position:relative;overflow:hidden}
+.orb1{position:absolute;top:-15%;left:50%;transform:translateX(-50%);width:900px;height:900px;border-radius:50%;background:radial-gradient(ellipse,rgba(200,169,81,.07) 0%,transparent 68%);pointer-events:none}
+.orb2{position:absolute;bottom:0;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(52,212,190,.05) 0%,transparent 70%);pointer-events:none}
+.orb3{position:absolute;top:20%;left:-8%;width:400px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(167,139,250,.04) 0%,transparent 70%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--goldbdr);background:var(--golddim);padding:5px 16px;border-radius:100px;font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:36px;animation:up .6s ease both}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
+.hero h1{font-family:var(--serif);font-size:clamp(48px,8vw,100px);font-weight:300;line-height:1.02;letter-spacing:-2px;color:var(--cream);max-width:960px;animation:up .7s .1s ease both}
+.hero h1 em{font-style:italic;color:var(--gold);font-weight:400}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--grayl);max-width:540px;margin-top:28px;font-weight:300;line-height:1.75;animation:up .7s .2s ease both}
+.hstats{display:flex;gap:0;margin-top:60px;border:1px solid var(--bdr);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.018);animation:up .7s .3s ease both}
+.hs{padding:24px 44px;text-align:center;border-right:1px solid var(--bdr)}
+.hs:last-child{border-right:none}
+.hsn{font-family:var(--serif);font-size:48px;font-weight:300;color:var(--gold);line-height:1;letter-spacing:-1px}
+.hsl{font-size:11px;color:var(--gray);font-weight:500;text-transform:uppercase;letter-spacing:.07em;margin-top:6px}
+.hero-acts{display:flex;gap:12px;margin-top:48px;animation:up .7s .4s ease both}
+.btng{background:var(--gold);color:var(--ink);padding:14px 34px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-family:var(--sans);letter-spacing:.02em;transition:all .2s}
+.btng:hover{background:var(--goldl);transform:translateY(-2px);box-shadow:0 10px 32px rgba(200,169,81,.25)}
+.btno{background:transparent;color:var(--cream2);padding:14px 34px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;border:1px solid var(--bdr);cursor:pointer;font-family:var(--sans);transition:all .2s;display:flex;align-items:center;gap:8px}
+.btno:hover{border-color:var(--grayl);background:rgba(255,255,255,.04)}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* TICKER */
+.tkwrap{border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);overflow:hidden;padding:13px 0;background:rgba(255,255,255,.015)}
+.tk{display:flex;gap:56px;animation:tick 35s linear infinite;white-space:nowrap}
+.tki{display:flex;align-items:center;gap:10px;flex-shrink:0;font-size:11px;font-weight:600;color:var(--gray);letter-spacing:.07em;text-transform:uppercase}
+.tki::before{content:'◆';color:var(--gold);font-size:7px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION */
+section{position:relative;z-index:1}
+.ctr{max-width:1160px;margin:0 auto;padding:0 28px}
+.slbl{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.slbl::before{content:'';width:22px;height:1px;background:var(--gold)}
+.stitle{font-family:var(--serif);font-size:clamp(34px,4.5vw,58px);font-weight:300;line-height:1.08;letter-spacing:-1px;color:var(--cream);margin-bottom:16px}
+.stitle em{font-style:italic;color:var(--gold)}
+.sbody{font-size:16.5px;color:var(--grayl);line-height:1.75;font-weight:300}
+
+/* PROBLEM */
+.problem{padding:130px 0}
+.prob-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:72px}
+.prob-cards{display:flex;flex-direction:column;gap:14px}
+.pc{background:rgba(255,255,255,.025);border:1px solid var(--bdr);border-radius:12px;padding:26px 28px;position:relative;overflow:hidden;transition:border-color .2s,background .2s}
+.pc:hover{border-color:var(--goldbdr);background:rgba(255,255,255,.04)}
+.pc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--gold),transparent)}
+.pc-ico{font-size:20px;margin-bottom:10px}
+.pc-t{font-size:14.5px;font-weight:700;color:var(--cream);margin-bottom:7px}
+.pc-b{font-size:13px;color:var(--grayl);line-height:1.65}
+.bigstat{background:linear-gradient(145deg,rgba(200,169,81,.07),rgba(52,212,190,.04));border:1px solid var(--goldbdr);border-radius:20px;padding:48px;margin-bottom:16px;text-align:center}
+.bignum{font-family:var(--serif);font-size:88px;font-weight:300;color:var(--gold);line-height:1;letter-spacing:-3px}
+.biglbl{font-size:15px;color:var(--grayl);margin-top:14px;line-height:1.6}
+.biglbl strong{color:var(--cream)}
+.smrow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sms{background:rgba(255,255,255,.025);border:1px solid var(--bdr);border-radius:12px;padding:22px;text-align:center}
+.smsn{font-family:var(--serif);font-size:36px;font-weight:300;color:var(--teal);line-height:1}
+.smsl{font-size:11px;color:var(--gray);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
+
+/* SCREENS */
+.screens{padding:120px 0;background:linear-gradient(180deg,transparent,rgba(200,169,81,.025) 50%,transparent)}
+.scr-hdr{text-align:center;margin-bottom:64px}
+.stabs{display:flex;gap:6px;margin-bottom:32px;justify-content:center;flex-wrap:wrap}
+.stab{padding:8px 20px;border-radius:100px;font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid var(--bdr);color:var(--gray);background:transparent;transition:all .2s;font-family:var(--sans)}
+.stab.on,.stab:hover{border-color:var(--gold);color:var(--gold);background:var(--golddim)}
+.spanel{display:none}
+.spanel.on{display:block;animation:fin .3s ease}
+@keyframes fin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* MOCKUP SHELL */
+.mku{background:var(--ink2);border:1px solid var(--bdr);border-radius:18px;overflow:hidden;box-shadow:0 50px 100px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04)}
+.mbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--bdr);background:rgba(255,255,255,.015)}
+.mdots{display:flex;gap:6px}
+.md{width:10px;height:10px;border-radius:50%}
+.md:nth-child(1){background:#ff5f57}.md:nth-child(2){background:#febc2e}.md:nth-child(3){background:#28c840}
+.murl{font-family:var(--mono);font-size:11px;color:var(--gray)}
+.msta{font-family:var(--mono);font-size:11px;color:var(--grn)}
+.mbody{display:grid;grid-template-columns:210px 1fr;min-height:540px}
+.msb{border-right:1px solid var(--bdr);padding:18px 14px;background:rgba(255,255,255,.01)}
+.msbl{display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:22px}
+.msblm{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,var(--gold),var(--goldl));display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:13px;font-weight:600;color:var(--ink)}
+.msbln{font-family:var(--serif);font-size:16px;color:var(--cream)}
+.msbsec{font-size:9px;font-weight:700;color:var(--gray);letter-spacing:.12em;text-transform:uppercase;padding:0 10px;margin:16px 0 5px}
+.msbi{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;font-size:12.5px;color:var(--gray);cursor:pointer;transition:all .15s;margin-bottom:1px}
+.msbi:hover,.msbi.on{background:rgba(255,255,255,.05);color:var(--cream)}
+.msbi.on{background:var(--golddim);color:var(--gold)}
+.msbi-i{font-size:13px;width:16px;text-align:center}
+.mmain{padding:24px 28px;overflow:hidden}
+.mpt{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--cream);margin-bottom:3px}
+.mps{font-size:11px;color:var(--gray);font-family:var(--mono);margin-bottom:22px}
+
+/* KPI */
+.krow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.kpi{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:10px 10px 0 0}
+.kpi:nth-child(1)::after{background:var(--gold)}.kpi:nth-child(2)::after{background:var(--teal)}.kpi:nth-child(3)::after{background:var(--lav)}.kpi:nth-child(4)::after{background:var(--rose)}
+.kl{font-size:9.5px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.kv{font-family:var(--serif);font-size:28px;font-weight:300;color:var(--cream);line-height:1}
+.kd{font-size:10px;margin-top:4px}
+.up{color:var(--grn)}.dn{color:#f87171}
+
+/* CHARTS */
+.crow{display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
+.cc{background:rgba(255,255,255,.02);border:1px solid var(--bdr);border-radius:10px;padding:18px}
+.cct{font-size:11px;font-weight:700;color:var(--cream);margin-bottom:16px;letter-spacing:.02em}
+.fbr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.fbl{font-size:10.5px;color:var(--gray);width:100px;flex-shrink:0}
+.fbt{flex:1;background:rgba(255,255,255,.06);border-radius:3px;height:7px}
+.fbf{height:100%;border-radius:3px}
+.fbn{font-size:10.5px;color:var(--cream);font-family:var(--mono);width:28px;text-align:right;flex-shrink:0}
+.cvg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cvc{background:rgba(255,255,255,.03);border-radius:8px;padding:12px;text-align:center}
+.cvp{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--teal)}
+.cvl{font-size:9.5px;color:var(--gray);margin-top:2px;letter-spacing:.04em}
+
+/* PATIENT PROFILE */
+.phdr{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--bdr)}
+.pav{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--golddim),var(--tealdim));border:1px solid var(--goldbdr);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;color:var(--gold);flex-shrink:0}
+.pname{font-family:var(--serif);font-size:20px;color:var(--cream);margin-bottom:2px}
+.pmeta{display:flex;gap:10px;flex-wrap:wrap}
+.ptag{background:rgba(255,255,255,.04);border:1px solid var(--bdr);padding:2px 10px;border-radius:100px;font-size:10.5px;color:var(--grayl)}
+.ptag.g{background:var(--golddim);border-color:var(--goldbdr);color:var(--gold)}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.pall{grid-column:1/-1}
+.ic{background:rgba(255,255,255,.025);border:1px solid var(--bdr);border-radius:10px;padding:16px}
+.ict{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.ir{display:flex;justify-content:space-between;margin-bottom:8px}
+.ik{font-size:11.5px;color:var(--gray)}
+.iv{font-size:11.5px;color:var(--cream);font-weight:500}
+.sbr{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.025);border:1px solid var(--bdr);border-radius:8px;padding:12px 16px;margin-bottom:8px;transition:border-color .2s}
+.sbr:hover{border-color:var(--goldbdr)}
+.sbrl{display:flex;align-items:center;gap:10px}
+.sbrd{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sbrn{font-size:12.5px;color:var(--cream);font-weight:500}
+.sbrd2{font-size:10.5px;color:var(--gray);font-family:var(--mono)}
+.pill{padding:3px 10px;border-radius:100px;font-size:10px;font-weight:600}
+.pg{background:rgba(74,222,128,.1);color:var(--grn);border:1px solid rgba(74,222,128,.2)}
+.pa{background:var(--golddim);color:var(--gold);border:1px solid var(--goldbdr)}
+.pb{background:rgba(167,139,250,.1);color:var(--lav);border:1px solid rgba(167,139,250,.2)}
+.pgy{background:rgba(255,255,255,.05);color:var(--gray);border:1px solid var(--bdr)}
+.tli{display:flex;gap:12px;margin-bottom:14px}
+.tld{display:flex;flex-direction:column;align-items:center}
+.tldt{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px}
+.tldl{flex:1;width:1px;background:var(--bdr);margin-top:4px}
+.tlc{flex:1}
+.tla{font-size:12px;color:var(--cream);font-weight:500;margin-bottom:2px}
+.tlt{font-size:10px;color:var(--gray);font-family:var(--mono)}
+.tln{font-size:11px;color:var(--grayl);margin-top:3px;font-style:italic}
+
+/* SCREENER */
+.scrstudy{background:var(--golddim);border:1px solid var(--goldbdr);border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.ssn{font-family:var(--serif);font-size:16px;color:var(--cream)}
+.sprg{margin-bottom:20px}
+.sprl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--gray);margin-bottom:6px}
+.sprb{height:4px;background:rgba(255,255,255,.07);border-radius:2px}
+.sprf{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--teal))}
+.sq{margin-bottom:14px}
+.sqt{font-size:13px;color:var(--cream);margin-bottom:10px;font-weight:500}
+.sqos{display:flex;flex-direction:column;gap:6px}
+.sqo{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:7px;padding:9px 14px;cursor:pointer;transition:all .15s}
+.sqo:hover,.sqo.on{border-color:var(--goldbdr);background:var(--golddim)}
+.sqr{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gray);flex-shrink:0}
+.sqo.on .sqr{border-color:var(--gold);background:var(--gold)}
+.sqot{font-size:12px;color:var(--cream)}
+.sqres{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:16px;margin-top:16px;text-align:center}
+.sqri{font-size:28px;margin-bottom:6px}
+.sqrt{font-size:13px;color:var(--grn);font-weight:600}
+.sqrs{font-size:11px;color:var(--grayl);margin-top:4px}
+
+/* PREDICTOR */
+.pinps{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.plbl{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.pinp{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:7px;padding:9px 14px;font-size:13px;color:var(--cream);font-family:var(--mono);width:100%}
+.pres{background:linear-gradient(135deg,rgba(200,169,81,.08),rgba(52,212,190,.05));border:1px solid var(--goldbdr);border-radius:14px;padding:24px;margin-bottom:16px}
+.prest{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}
+.prr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.prrl{font-size:12px;color:var(--grayl)}
+.prrv{font-family:var(--serif);font-size:22px;color:var(--cream)}
+.prrv.ac{color:var(--gold)}.prrv.wn{color:var(--amb)}
+.palt{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.palti{font-size:14px;flex-shrink:0}
+.paltt{font-size:11.5px;color:var(--cream2);line-height:1.55}
+.pbars{display:flex;gap:4px;align-items:flex-end;height:60px;margin-top:16px}
+.pbar{flex:1;border-radius:3px 3px 0 0;min-height:8px}
+
+/* REFERRAL */
+.rthr{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:8px;padding:8px 12px}
+.rth{font-size:9.5px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.08em}
+.rrow{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:8px;padding:12px 12px;border-radius:8px;margin-bottom:4px;background:rgba(255,255,255,.025);border:1px solid var(--bdr);align-items:center;transition:border-color .15s}
+.rrow:hover{border-color:var(--goldbdr)}
+.rsrc{font-size:12px;color:var(--cream);font-weight:500;display:flex;align-items:center;gap:8px}
+.rsd{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rnum{font-size:12px;color:var(--cream);font-family:var(--mono)}
+.rrate{font-size:12px;font-family:var(--mono)}
+.rbc{display:flex;align-items:center;gap:6px}
+.rmb{height:5px;border-radius:2px}
+
+/* HOW */
+.how{padding:120px 0}
+.howg{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:64px}
+.hwc{background:rgba(255,255,255,.022);border:1px solid var(--bdr);border-radius:16px;padding:36px 30px;transition:all .3s}
+.hwc:hover{transform:translateY(-5px);border-color:var(--goldbdr);background:rgba(255,255,255,.04)}
+.hws{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.12em;margin-bottom:16px}
+.hwi{width:50px;height:50px;border-radius:11px;background:var(--golddim);border:1px solid var(--goldbdr);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+.hwt{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--cream);margin-bottom:12px;line-height:1.2}
+.hwb{font-size:13.5px;color:var(--grayl);line-height:1.7}
+
+/* FEATURES */
+.features{padding:120px 0}
+.fhdr{text-align:center;margin-bottom:64px}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--bdr);border-radius:18px;overflow:hidden;background:var(--bdr);gap:1px}
+.fc{background:var(--ink);padding:36px 32px;transition:background .2s}
+.fc:hover{background:rgba(200,169,81,.035)}
+.fci{font-size:26px;margin-bottom:16px;display:block}
+.fct{font-size:15px;font-weight:700;color:var(--cream);margin-bottom:9px}
+.fcb{font-size:13px;color:var(--grayl);line-height:1.65}
+
+/* INTEGRATIONS */
+.integrations{padding:100px 0;text-align:center}
+.ig{display:flex;justify-content:center;gap:12px;margin-top:48px;flex-wrap:wrap}
+.ib{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:100px;padding:10px 22px;font-size:12.5px;font-weight:500;color:var(--gray);transition:all .2s;display:flex;align-items:center;gap:8px}
+.ib:hover{border-color:var(--goldbdr);color:var(--cream)}
+.ib.dim{opacity:.45}
+.idot{width:6px;height:6px;border-radius:50%;background:var(--grn)}
+.ib.dim .idot{background:var(--gray)}
+.in{margin-top:28px;font-size:12.5px;color:var(--gray)}
+.in a{color:var(--gold);text-decoration:none}
+
+/* FOUNDER */
+.founder{padding:120px 0}
+.fcard{display:grid;grid-template-columns:1fr 1.6fr;gap:72px;align-items:center;background:linear-gradient(140deg,rgba(200,169,81,.06),rgba(52,212,190,.03));border:1px solid var(--goldbdr);border-radius:24px;padding:60px}
+.fleft{text-align:center}
+.fav{width:160px;height:160px;border-radius:50%;margin:0 auto 20px;background:linear-gradient(135deg,var(--golddim),var(--tealdim));border:2px solid var(--goldbdr);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:60px;font-weight:300;color:var(--gold)}
+.fn{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--cream);margin-bottom:3px}
+.fr{font-size:12px;color:var(--gold);font-weight:600;margin-bottom:16px;letter-spacing:.04em}
+.ftags{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.ftag{background:rgba(255,255,255,.04);border:1px solid var(--bdr);padding:3px 11px;border-radius:100px;font-size:10.5px;color:var(--grayl)}
+.fq{font-family:var(--serif);font-size:20px;font-weight:300;font-style:italic;color:var(--cream);line-height:1.55;margin-bottom:20px}
+.fq::before{content:'"';color:var(--gold);font-size:44px;line-height:0;vertical-align:-14px;margin-right:4px}
+.fb{font-size:14.5px;color:var(--grayl);line-height:1.75;font-weight:300;margin-bottom:28px}
+.fls{display:flex;gap:10px}
+
+/* WAITLIST */
+.waitlist{padding:130px 0;text-align:center;position:relative;overflow:hidden}
+.waitlist::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,rgba(200,169,81,.07) 0%,transparent 68%);pointer-events:none}
+.waitlist h2{font-family:var(--serif);font-size:clamp(40px,6vw,70px);font-weight:300;line-height:1.05;letter-spacing:-1.5px;margin-bottom:18px}
+.waitlist h2 em{font-style:italic;color:var(--gold)}
+.wlsub{font-size:16px;color:var(--grayl);max-width:440px;margin:0 auto 44px;font-weight:300;line-height:1.7}
+.wlf{display:flex;gap:10px;max-width:460px;margin:0 auto}
+.wli{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:8px;padding:13px 18px;font-size:14px;color:var(--cream);font-family:var(--sans);outline:none;transition:border-color .2s}
+.wli::placeholder{color:var(--gray)}
+.wli:focus{border-color:var(--gold)}
+.wls{background:var(--gold);color:var(--ink);padding:13px 26px;border-radius:8px;font-size:13.5px;font-weight:700;border:none;cursor:pointer;font-family:var(--sans);letter-spacing:.02em;transition:all .2s;white-space:nowrap}
+.wls:hover{background:var(--goldl);transform:translateY(-1px)}
+.wln{font-size:11.5px;color:var(--gray);margin-top:14px}
+.wlok{display:none;background:var(--golddim);border:1px solid var(--goldbdr);border-radius:10px;padding:18px 28px;font-size:14px;color:var(--gold);font-weight:600;max-width:460px;margin:0 auto}
+
+/* FOOTER */
+footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
+.ftlo{font-family:var(--serif);font-size:28px;font-weight:300;color:var(--cream);margin-bottom:6px}
+.ftlo span{color:var(--gold)}
+.fttag{font-size:12.5px;color:var(--gray);margin-bottom:28px}
+.ftlinks{display:flex;gap:28px;justify-content:center;list-style:none;margin-bottom:28px}
+.ftlinks a{font-size:12.5px;color:var(--gray);text-decoration:none;transition:color .2s}
+.ftlinks a:hover{color:var(--cream)}
+.ftcopy{font-size:11.5px;color:var(--gray);opacity:.5}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.v{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .prob-layout{grid-template-columns:1fr;gap:40px}
+  .howg{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .mbody{grid-template-columns:1fr}
+  .msb{display:none}
+  .krow{grid-template-columns:1fr 1fr}
+  .crow{grid-template-columns:1fr}
+  .fcard{grid-template-columns:1fr;padding:36px;gap:40px}
+  .wlf{flex-direction:column}
+  .hstats{flex-direction:column;border:none}
+  .hs{border:1px solid var(--bdr);border-radius:10px;margin-bottom:10px}
+  .pinps{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .fgrid{grid-template-columns:1fr}
+  .hero-acts{flex-direction:column}
+  .rthr{display:none}
+  .rrow{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-mark">E</div>
-    <div class="nav-logo-text">Enroll<span>iq</span></div>
-  </a>
+  <a class="logo" href="#"><div class="lmark">E</div><div class="ltext">Enroll<span>iq</span></div></a>
   <ul class="nav-links">
-    <li><a href="#problem">The Problem</a></li>
-    <li><a href="#platform">Platform</a></li>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#screens">Platform</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#integrations">Integrations</a></li>
     <li><a href="#founder">About</a></li>
   </ul>
-  <a href="#waitlist" class="nav-cta">Request Early Access</a>
+  <a href="#waitlist" class="nav-btn">Request Early Access</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-glow-2"></div>
-
-  <div class="hero-badge">Now in Development · Early Access Open</div>
-
+  <div class="orb1"></div><div class="orb2"></div><div class="orb3"></div>
+  <div class="badge"><div class="bdot"></div>Now in Development · Early Access Open</div>
   <h1>Recruitment Intelligence<br>for <em>Clinical Trials</em></h1>
-
-  <p class="hero-sub">
-    One patient. One profile. Every study, every site, every interaction —
-    connected. Real-time enrollment analytics that tell you what's happening
-    before leadership has to ask.
-  </p>
-
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="hero-stat-num">80%</div>
-      <div class="hero-stat-label">of trials miss enrollment targets</div>
-    </div>
-    <div class="hero-stat-divider"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">30%</div>
-      <div class="hero-stat-label">of sites enroll zero patients</div>
-    </div>
-    <div class="hero-stat-divider"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">22+</div>
-      <div class="hero-stat-label">logins per coordinator per study</div>
-    </div>
+  <p class="hero-sub">One patient. One profile. Every study, every site, every interaction connected. Real-time enrollment analytics before leadership has to ask.</p>
+  <div class="hstats">
+    <div class="hs"><div class="hsn">80%</div><div class="hsl">of trials miss enrollment targets</div></div>
+    <div class="hs"><div class="hsn">55%</div><div class="hsl">terminated due to low enrollment</div></div>
+    <div class="hs"><div class="hsn">$8M</div><div class="hsl">cost per day of trial delay</div></div>
+    <div class="hs"><div class="hsn">5%</div><div class="hsl">of eligible patients ever enroll</div></div>
   </div>
-
-  <div class="hero-actions">
-    <a href="#waitlist" class="btn-primary">Get Early Access</a>
-    <a href="#platform" class="btn-ghost">
-      <span>See the Platform</span>
-      <span>↓</span>
-    </a>
+  <div class="hero-acts">
+    <a href="#waitlist" class="btng">Get Early Access</a>
+    <a href="#screens" class="btno">See the Platform ↓</a>
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker">
-    <span class="ticker-item">One Patient Profile</span>
-    <span class="ticker-item">Multi-Study Branches</span>
-    <span class="ticker-item">Real-Time Funnel Analytics</span>
-    <span class="ticker-item">Enrollment Forecasting</span>
-    <span class="ticker-item">Screen Fail Intelligence</span>
-    <span class="ticker-item">Referral Source ROI</span>
-    <span class="ticker-item">CTMS Integrations</span>
-    <span class="ticker-item">Site-Level Access Controls</span>
-    <span class="ticker-item">AI-Assisted Outreach</span>
-    <span class="ticker-item">HIPAA Compliant Infrastructure</span>
-    <!-- repeat for seamless loop -->
-    <span class="ticker-item">One Patient Profile</span>
-    <span class="ticker-item">Multi-Study Branches</span>
-    <span class="ticker-item">Real-Time Funnel Analytics</span>
-    <span class="ticker-item">Enrollment Forecasting</span>
-    <span class="ticker-item">Screen Fail Intelligence</span>
-    <span class="ticker-item">Referral Source ROI</span>
-    <span class="ticker-item">CTMS Integrations</span>
-    <span class="ticker-item">Site-Level Access Controls</span>
-    <span class="ticker-item">AI-Assisted Outreach</span>
-    <span class="ticker-item">HIPAA Compliant Infrastructure</span>
+<div class="tkwrap">
+  <div class="tk">
+    <span class="tki">One Patient Profile</span><span class="tki">Multi-Study Branches</span><span class="tki">Append-Only History</span><span class="tki">Live Funnel Analytics</span><span class="tki">Enrollment Forecasting</span><span class="tki">Screen Fail Intelligence</span><span class="tki">Referral Source ROI</span><span class="tki">CTMS Integration Ready</span><span class="tki">AI-Assisted Outreach</span><span class="tki">HIPAA Compliant</span>
+    <span class="tki">One Patient Profile</span><span class="tki">Multi-Study Branches</span><span class="tki">Append-Only History</span><span class="tki">Live Funnel Analytics</span><span class="tki">Enrollment Forecasting</span><span class="tki">Screen Fail Intelligence</span><span class="tki">Referral Source ROI</span><span class="tki">CTMS Integration Ready</span><span class="tki">AI-Assisted Outreach</span><span class="tki">HIPAA Compliant</span>
   </div>
 </div>
 
-<!-- PROBLEM -->
 <section class="problem" id="problem">
-  <div class="container">
-    <div class="problem-grid">
+  <div class="ctr">
+    <div class="prob-layout">
       <div>
-        <div class="section-label reveal">The Problem</div>
-        <h2 class="section-title reveal">Clinical recruitment<br>is flying <em>blind</em></h2>
-        <p class="section-body reveal" style="margin-bottom:40px;">
-          Sites run on fragmented systems, inconsistent workflows, and gut instinct.
-          The data exists — it's just locked in silos, overwritten, and impossible to act on.
-        </p>
-
-        <div class="problem-cards">
-          <div class="problem-card reveal">
-            <div class="problem-card-icon">🗂️</div>
-            <div class="problem-card-title">Status history thrown away</div>
-            <div class="problem-card-text">Most CTMS platforms store only the current status. You can't answer "where were patients last month" because that data is gone. Every transition overwrites the last.</div>
-          </div>
-          <div class="problem-card reveal">
-            <div class="problem-card-icon">👤</div>
-            <div class="problem-card-title">No unified patient identity</div>
-            <div class="problem-card-text">A patient referred to Study A and Study B exists as two separate records. No institutional memory. No cross-study visibility. Duplicated work at every step.</div>
-          </div>
-          <div class="problem-card reveal">
-            <div class="problem-card-icon">📊</div>
-            <div class="problem-card-title">Analytics require days of manual work</div>
-            <div class="problem-card-text">Leadership asks "how many leads do we need for Study X?" and a data engineer spends 3 days pulling from 4 systems to answer a question that should update automatically.</div>
-          </div>
-          <div class="problem-card reveal">
-            <div class="problem-card-icon">🔀</div>
-            <div class="problem-card-title">Every site does it differently</div>
-            <div class="problem-card-text">No standardization means no comparability. You can't benchmark Site A against Site B when they're each tracking recruitment in their own ad-hoc way.</div>
-          </div>
+        <div class="slbl reveal">The Problem</div>
+        <h2 class="stitle reveal">Clinical recruitment<br>is flying <em>blind</em></h2>
+        <p class="sbody reveal" style="margin-bottom:40px">Sites run on fragmented systems, inconsistent workflows, and gut instinct. The data exists — locked in silos, overwritten, and impossible to act on at scale.</p>
+        <div class="prob-cards">
+          <div class="pc reveal"><div class="pc-ico">🗑️</div><div class="pc-t">Status history is thrown away</div><div class="pc-b">Every status transition — the most analytically valuable data in the system — gets overwritten and discarded. You can never reconstruct where patients were or how long transitions took.</div></div>
+          <div class="pc reveal"><div class="pc-ico">👤</div><div class="pc-t">No unified patient identity</div><div class="pc-b">A patient referred for Study A and Study B exists as two separate records. No history, no context, no institutional memory across studies. Every referral starts from zero.</div></div>
+          <div class="pc reveal"><div class="pc-ico">📐</div><div class="pc-t">No standardization across sites</div><div class="pc-b">Every site defines statuses differently. Incomparable data means no cross-site benchmarking, no learning, no systematic improvement. You can't fix what you can't measure consistently.</div></div>
+          <div class="pc reveal"><div class="pc-ico">⏳</div><div class="pc-t">Enrollment forecasts take days to build</div><div class="pc-b">Answering "are we on track?" means pulling from 4 systems, building a spreadsheet, and producing a report that's already stale. Every quarter. Same question. Same manual work.</div></div>
         </div>
       </div>
-
-      <div class="reveal">
-        <div class="problem-stat-block">
-          <span class="problem-stat-big">3 days</span>
-          <p class="problem-stat-desc">
-            Average time a data engineer spends answering
-            <strong>"how many leads do we need to hit enrollment?"</strong>
-            — a question that should answer itself.
-          </p>
-          <div style="margin-top:32px; padding-top:32px; border-top:1px solid rgba(201,168,76,0.2);">
-            <p class="problem-stat-desc">
-              We built Enrolliq because we lived this problem.
-              Not as consultants — as <strong>data engineers inside clinical research sites</strong>,
-              watching coordinators work around systems that were supposed to help them.
-            </p>
-          </div>
+      <div>
+        <div class="bigstat reveal"><div class="bignum">3 days</div><p class="biglbl">Average time to answer <strong>"how many leads do we need to hit enrollment?"</strong> — a question that should update in real time, automatically.</p></div>
+        <div class="smrow reveal">
+          <div class="sms"><div class="smsn">28%</div><div class="smsl">Coordinator workforce lost since 2018</div></div>
+          <div class="sms"><div class="smsn">22+</div><div class="smsl">System logins per coordinator per study</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PLATFORM PREVIEW -->
-<section class="platform" id="platform">
-  <div class="container">
-    <div class="platform-header">
-      <div class="section-label reveal" style="justify-content:center;">The Platform</div>
-      <h2 class="section-title reveal" style="text-align:center;">Built from the inside.<br><em>For the people doing the work.</em></h2>
-      <p class="section-body reveal">Every feature designed for two audiences simultaneously — coordinators who need simplicity, and analysts who need data. No compromise between the two.</p>
+<section class="screens" id="screens">
+  <div class="ctr">
+    <div class="scr-hdr">
+      <div class="slbl reveal" style="justify-content:center">The Platform</div>
+      <h2 class="stitle reveal" style="text-align:center">Five views.<br><em>Complete clarity.</em></h2>
+      <p class="sbody reveal" style="max-width:520px;margin:0 auto">Every screen designed for two audiences simultaneously — coordinators who need simplicity, analysts who need clean structured data. No compromise.</p>
+    </div>
+    <div class="stabs reveal">
+      <button class="stab on" onclick="showS('dashboard',this)">Enrollment Dashboard</button>
+      <button class="stab" onclick="showS('patient',this)">Patient Profile</button>
+      <button class="stab" onclick="showS('screener',this)">Pre-Screener</button>
+      <button class="stab" onclick="showS('predictor',this)">Enrollment Predictor</button>
+      <button class="stab" onclick="showS('referral',this)">Referral ROI</button>
     </div>
 
-    <div class="platform-tabs reveal">
-      <button class="platform-tab active">Enrollment Dashboard</button>
-      <button class="platform-tab">Patient Profile</button>
-      <button class="platform-tab">Funnel Analytics</button>
-      <button class="platform-tab">Enrollment Predictor</button>
-    </div>
-
-    <!-- APP MOCKUP -->
-    <div class="app-mockup reveal">
-      <div class="app-topbar">
-        <div class="app-dots">
-          <div class="app-dot"></div>
-          <div class="app-dot"></div>
-          <div class="app-dot"></div>
-        </div>
-        <div class="app-title-bar">enrolliq.app — Enrollment Intelligence Dashboard</div>
-        <div style="font-size:11px;color:var(--gray);font-family:var(--mono);">Live · All Sites</div>
-      </div>
-
-      <div class="app-body">
-        <!-- Sidebar -->
-        <div class="app-sidebar">
-          <div class="app-sidebar-logo">
-            <div class="app-sidebar-logo-mark">E</div>
-            <div class="app-sidebar-logo-text">Enrolliq</div>
+    <!-- DASHBOARD -->
+    <div class="spanel on reveal" id="sc-dashboard">
+      <div class="mku">
+        <div class="mbar"><div class="mdots"><div class="md"></div><div class="md"></div><div class="md"></div></div><div class="murl">enrolliq.app / dashboard</div><div class="msta">● Live</div></div>
+        <div class="mbody">
+          <div class="msb">
+            <div class="msbl"><div class="msblm">E</div><div class="msbln">Enrolliq</div></div>
+            <div class="msbsec">Overview</div>
+            <div class="msbi on"><span class="msbi-i">📊</span> Dashboard</div>
+            <div class="msbi"><span class="msbi-i">➕</span> Add Lead</div>
+            <div class="msbi"><span class="msbi-i">👥</span> Patients</div>
+            <div class="msbsec">Analytics</div>
+            <div class="msbi"><span class="msbi-i">🔮</span> Predictor</div>
+            <div class="msbi"><span class="msbi-i">📡</span> Referral ROI</div>
+            <div class="msbi"><span class="msbi-i">⚡</span> Speed Metrics</div>
+            <div class="msbsec">Admin</div>
+            <div class="msbi"><span class="msbi-i">🏥</span> Sites</div>
+            <div class="msbi"><span class="msbi-i">🔬</span> Studies</div>
           </div>
-
-          <div class="app-nav-section">Main</div>
-          <div class="app-nav-item active">
-            <span class="app-nav-icon">📊</span> Dashboard
-          </div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">➕</span> Add Lead
-          </div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">👥</span> Patients
-          </div>
-
-          <div class="app-nav-section">Analytics</div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">🔮</span> Predictor
-          </div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">📡</span> Referral ROI
-          </div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">⚡</span> Speed Metrics
-          </div>
-
-          <div class="app-nav-section">Admin</div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">🏥</span> Sites
-          </div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">🔬</span> Studies
-          </div>
-          <div class="app-nav-item">
-            <span class="app-nav-icon">👤</span> Users
-          </div>
-        </div>
-
-        <!-- Main content -->
-        <div class="app-main">
-          <div class="app-page-title">Welcome back, Vasanth 👋</div>
-          <div class="app-page-sub">Viewing: All Sites · All Studies · Last 30 days</div>
-
-          <div class="app-kpi-row">
-            <div class="app-kpi">
-              <div class="app-kpi-label">Total Leads</div>
-              <div class="app-kpi-value">1,284</div>
-              <div class="app-kpi-delta">↑ 12% vs last month</div>
+          <div class="mmain">
+            <div class="mpt">Welcome back, Vasanth 👋</div>
+            <div class="mps">All Sites · All Studies · Last 30 days · Auto-refreshing</div>
+            <div class="krow">
+              <div class="kpi"><div class="kl">Total Leads</div><div class="kv">1,284</div><div class="kd up">↑ 12% vs last month</div></div>
+              <div class="kpi"><div class="kl">Screened</div><div class="kv">342</div><div class="kd up">↑ 8% vs last month</div></div>
+              <div class="kpi"><div class="kl">Enrolled</div><div class="kv">87</div><div class="kd up">↑ 5% vs last month</div></div>
+              <div class="kpi"><div class="kl">Screen Fail Rate</div><div class="kv">42%</div><div class="kd dn">↑ 3% · flag for review</div></div>
             </div>
-            <div class="app-kpi">
-              <div class="app-kpi-label">Screened</div>
-              <div class="app-kpi-value">342</div>
-              <div class="app-kpi-delta">↑ 8% vs last month</div>
-            </div>
-            <div class="app-kpi">
-              <div class="app-kpi-label">Enrolled</div>
-              <div class="app-kpi-value">87</div>
-              <div class="app-kpi-delta">↑ 5% vs last month</div>
-            </div>
-            <div class="app-kpi">
-              <div class="app-kpi-label">Screen Fail Rate</div>
-              <div class="app-kpi-value">42%</div>
-              <div class="app-kpi-delta" style="color:#f87171;">↑ 3% (watch this)</div>
-            </div>
-          </div>
-
-          <div class="app-charts">
-            <div class="app-chart-card">
-              <div class="app-chart-title">Recruitment Funnel · Alzheimer's Study — Site A</div>
-              <div class="funnel-bars">
-                <div class="funnel-row">
-                  <div class="funnel-label">Got Lead</div>
-                  <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:var(--gold);"></div></div>
-                  <div class="funnel-count">284</div>
-                </div>
-                <div class="funnel-row">
-                  <div class="funnel-label">Contacted</div>
-                  <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:72%;background:#818cf8;"></div></div>
-                  <div class="funnel-count">204</div>
-                </div>
-                <div class="funnel-row">
-                  <div class="funnel-label">Scheduled</div>
-                  <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:44%;background:var(--teal);"></div></div>
-                  <div class="funnel-count">126</div>
-                </div>
-                <div class="funnel-row">
-                  <div class="funnel-label">In Screening</div>
-                  <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:28%;background:#f472b6;"></div></div>
-                  <div class="funnel-count">80</div>
-                </div>
-                <div class="funnel-row">
-                  <div class="funnel-label">Enrolled</div>
-                  <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:12%;background:#4ade80;"></div></div>
-                  <div class="funnel-count">34</div>
-                </div>
+            <div class="crow">
+              <div class="cc">
+                <div class="cct">Recruitment Funnel · Alzheimer's Study A · All Sites</div>
+                <div class="fbr"><div class="fbl">New Lead</div><div class="fbt"><div class="fbf" style="width:100%;background:var(--gold)"></div></div><div class="fbn">284</div></div>
+                <div class="fbr"><div class="fbl">Contacted</div><div class="fbt"><div class="fbf" style="width:72%;background:var(--lav)"></div></div><div class="fbn">204</div></div>
+                <div class="fbr"><div class="fbl">Pre-Screened</div><div class="fbt"><div class="fbf" style="width:55%;background:var(--teal)"></div></div><div class="fbn">156</div></div>
+                <div class="fbr"><div class="fbl">Scheduled</div><div class="fbt"><div class="fbf" style="width:38%;background:var(--rose)"></div></div><div class="fbn">108</div></div>
+                <div class="fbr"><div class="fbl">In Screening</div><div class="fbt"><div class="fbf" style="width:22%;background:var(--amb)"></div></div><div class="fbn">62</div></div>
+                <div class="fbr"><div class="fbl">Enrolled</div><div class="fbt"><div class="fbf" style="width:11%;background:var(--grn)"></div></div><div class="fbn">34</div></div>
               </div>
-            </div>
-
-            <div class="app-chart-card">
-              <div class="app-chart-title">Conversion Rates</div>
-              <div class="conversion-grid">
-                <div class="conv-item">
-                  <div class="conv-pct">71.8%</div>
-                  <div class="conv-label">Lead → Contact</div>
-                </div>
-                <div class="conv-item">
-                  <div class="conv-pct">61.7%</div>
-                  <div class="conv-label">Contact → Screen</div>
-                </div>
-                <div class="conv-item">
-                  <div class="conv-pct">42.5%</div>
-                  <div class="conv-label">Screen → Enroll</div>
-                </div>
-                <div class="conv-item">
-                  <div class="conv-pct" style="color:var(--gold);">28</div>
-                  <div class="conv-label">Leads Needed / Enroll</div>
+              <div class="cc">
+                <div class="cct">Conversion Rates · This Study</div>
+                <div class="cvg">
+                  <div class="cvc"><div class="cvp">71.8%</div><div class="cvl">Lead → Contact</div></div>
+                  <div class="cvc"><div class="cvp">76.5%</div><div class="cvl">Contact → Pre-Screen</div></div>
+                  <div class="cvc"><div class="cvp">55.7%</div><div class="cvl">Screen → Enroll</div></div>
+                  <div class="cvc"><div class="cvp" style="color:var(--gold)">28</div><div class="cvl">Leads per Enroll</div></div>
                 </div>
               </div>
             </div>
@@ -1061,283 +461,307 @@
         </div>
       </div>
     </div>
+
+    <!-- PATIENT PROFILE -->
+    <div class="spanel" id="sc-patient">
+      <div class="mku">
+        <div class="mbar"><div class="mdots"><div class="md"></div><div class="md"></div><div class="md"></div></div><div class="murl">enrolliq.app / patients / #4821</div><div class="msta">● Patient Record</div></div>
+        <div class="mbody">
+          <div class="msb">
+            <div class="msbl"><div class="msblm">E</div><div class="msbln">Enrolliq</div></div>
+            <div class="msbsec">Overview</div>
+            <div class="msbi"><span class="msbi-i">📊</span> Dashboard</div>
+            <div class="msbi on"><span class="msbi-i">👥</span> Patients</div>
+            <div class="msbsec">Analytics</div>
+            <div class="msbi"><span class="msbi-i">🔮</span> Predictor</div>
+          </div>
+          <div class="mmain">
+            <div class="phdr">
+              <div class="pav">M</div>
+              <div>
+                <div class="pname">Margaret D., 68</div>
+                <div class="pmeta">
+                  <span class="ptag">San Antonio, TX</span>
+                  <span class="ptag">First contact: Jan 14, 2025</span>
+                  <span class="ptag g">3 Study Branches</span>
+                  <span class="ptag">ID #4821</span>
+                </div>
+              </div>
+            </div>
+            <div class="pgrid">
+              <div class="ic">
+                <div class="ict">Contact Info</div>
+                <div class="ir"><span class="ik">Phone</span><span class="iv">(210) 555-0192</span></div>
+                <div class="ir"><span class="ik">Email</span><span class="iv">m.davis@email.com</span></div>
+                <div class="ir"><span class="ik">Preferred</span><span class="iv">Morning calls</span></div>
+                <div class="ir"><span class="ik">Referred by</span><span class="iv">Physician Referral</span></div>
+              </div>
+              <div class="ic">
+                <div class="ict">Interaction Timeline</div>
+                <div class="tli"><div class="tld"><div class="tldt"></div><div class="tldl"></div></div><div class="tlc"><div class="tla">Enrolled — Memory Study B</div><div class="tlt">Mar 01, 2025 · 09:14am</div></div></div>
+                <div class="tli"><div class="tld"><div class="tldt" style="background:var(--teal)"></div><div class="tldl"></div></div><div class="tlc"><div class="tla">Screening Visit Completed</div><div class="tlt">Feb 22 · 02:30pm</div><div class="tln">All labs within range</div></div></div>
+                <div class="tli"><div class="tld"><div class="tldt" style="background:var(--lav)"></div></div><div class="tlc"><div class="tla">SMS sent — appointment reminder</div><div class="tlt">Feb 20 · 10:02am</div></div></div>
+              </div>
+            </div>
+            <div class="ic pall">
+              <div class="ict">Study Branches — Full History Always Preserved</div>
+              <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--grn)"></div><div><div class="sbrn">Memory Study B — Phase II</div><div class="sbrd2">Started Jan 14, 2025</div></div></div><span class="pill pg">Enrolled</span></div>
+              <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--gold)"></div><div><div class="sbrn">Alzheimer's Study A — Phase III</div><div class="sbrd2">Started Mar 04, 2025</div></div></div><span class="pill pa">Pre-Screening</span></div>
+              <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--gray)"></div><div><div class="sbrn">Obesity Study C — Phase II</div><div class="sbrd2">Sep 2024 — history preserved</div></div></div><span class="pill pgy">Screen Failed · BMI criteria</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRE-SCREENER -->
+    <div class="spanel" id="sc-screener">
+      <div class="mku">
+        <div class="mbar"><div class="mdots"><div class="md"></div><div class="md"></div><div class="md"></div></div><div class="murl">enrolliq.app / pre-screen / alzheimers-study-a</div><div class="msta">● Pre-Screen Tool</div></div>
+        <div class="mbody">
+          <div class="msb">
+            <div class="msbl"><div class="msblm">E</div><div class="msbln">Enrolliq</div></div>
+            <div class="msbsec">Tools</div>
+            <div class="msbi on"><span class="msbi-i">🧪</span> Pre-Screener</div>
+            <div class="msbi"><span class="msbi-i">📋</span> Criteria Builder</div>
+            <div class="msbsec">Studies</div>
+            <div class="msbi"><span class="msbi-i">🔬</span> All Studies</div>
+          </div>
+          <div class="mmain">
+            <div class="mpt">Pre-Screening Tool</div>
+            <div class="mps">Alzheimer's Study A · Phase III · Site 2</div>
+            <div class="scrstudy"><div><div class="ssn">Alzheimer's Study A — Phase III</div><div style="font-size:10.5px;color:var(--gold);margin-top:3px">Target: 40 enrolled · 12 remaining</div></div><span class="pill pa">Active</span></div>
+            <div class="sprg"><div class="sprl"><span>Question 3 of 7</span><span>43% complete</span></div><div class="sprb"><div class="sprf" style="width:43%"></div></div></div>
+            <div class="sq">
+              <div class="sqt">3. Has the patient been diagnosed with mild cognitive impairment (MCI) or early-stage Alzheimer's by a licensed physician?</div>
+              <div class="sqos">
+                <div class="sqo on"><div class="sqr"></div><span class="sqot">Yes — formal diagnosis on record</span></div>
+                <div class="sqo"><div class="sqr"></div><span class="sqot">No — family concern only, no formal diagnosis</span></div>
+                <div class="sqo"><div class="sqr"></div><span class="sqot">Unsure — patient is checking with their doctor</span></div>
+              </div>
+            </div>
+            <div class="sqres"><div class="sqri">✅</div><div class="sqrt">Likely Eligible — Continue to Scheduling</div><div class="sqrs">Passed 3 of 3 criteria reviewed · 4 remaining</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREDICTOR -->
+    <div class="spanel" id="sc-predictor">
+      <div class="mku">
+        <div class="mbar"><div class="mdots"><div class="md"></div><div class="md"></div><div class="md"></div></div><div class="murl">enrolliq.app / predictor</div><div class="msta">● Enrollment Intelligence</div></div>
+        <div class="mbody">
+          <div class="msb">
+            <div class="msbl"><div class="msblm">E</div><div class="msbln">Enrolliq</div></div>
+            <div class="msbsec">Analytics</div>
+            <div class="msbi on"><span class="msbi-i">🔮</span> Predictor</div>
+            <div class="msbi"><span class="msbi-i">📡</span> Referral ROI</div>
+            <div class="msbi"><span class="msbi-i">⚡</span> Speed Metrics</div>
+          </div>
+          <div class="mmain">
+            <div class="mpt">Enrollment Predictor</div>
+            <div class="mps">Based on your site's actual historical conversion rates</div>
+            <div class="pinps">
+              <div><div class="plbl">Study</div><div class="pinp">Alzheimer's Study A</div></div>
+              <div><div class="plbl">Enrollment Target</div><div class="pinp">40 patients</div></div>
+              <div><div class="plbl">Currently Enrolled</div><div class="pinp">28 patients</div></div>
+              <div><div class="plbl">Target Close Date</div><div class="pinp">June 30, 2025</div></div>
+            </div>
+            <div class="pres">
+              <div class="prest">📊 Prediction · Based on Last 90 Days of Site Data</div>
+              <div class="prr"><span class="prrl">Additional patients needed</span><span class="prrv ac">12 more</span></div>
+              <div class="prr"><span class="prrl">Leads required at 28% conversion</span><span class="prrv ac">43 leads</span></div>
+              <div class="prr"><span class="prrl">Projected completion at current pace</span><span class="prrv wn">Aug 14, 2025</span></div>
+              <div class="prr"><span class="prrl">Days behind target</span><span class="prrv" style="color:#f87171">45 days</span></div>
+            </div>
+            <div class="palt"><span class="palti">⚠️</span><span class="paltt">At your current lead intake of 3.2/week, you will miss the June 30 deadline by ~45 days. To close on time, increase new leads to <strong>6.8/week</strong> starting this week.</span></div>
+            <div style="margin-top:16px">
+              <div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;font-weight:700">Weekly enrollment pace vs. target</div>
+              <div class="pbars">
+                <div class="pbar" style="height:30%;background:var(--gold);opacity:.7"></div>
+                <div class="pbar" style="height:45%;background:var(--gold);opacity:.75"></div>
+                <div class="pbar" style="height:38%;background:var(--gold);opacity:.8"></div>
+                <div class="pbar" style="height:55%;background:var(--gold)"></div>
+                <div class="pbar" style="height:42%;background:var(--gold)"></div>
+                <div class="pbar" style="height:60%;background:var(--teal)"></div>
+                <div class="pbar" style="height:52%;background:var(--teal);opacity:.8"></div>
+                <div class="pbar" style="height:48%;background:rgba(255,255,255,.12);border:1px dashed rgba(255,255,255,.2)"></div>
+                <div class="pbar" style="height:56%;background:rgba(255,255,255,.08);border:1px dashed rgba(255,255,255,.2)"></div>
+                <div class="pbar" style="height:70%;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.2)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFERRAL ROI -->
+    <div class="spanel" id="sc-referral">
+      <div class="mku">
+        <div class="mbar"><div class="mdots"><div class="md"></div><div class="md"></div><div class="md"></div></div><div class="murl">enrolliq.app / analytics / referral-roi</div><div class="msta">● Live Analytics</div></div>
+        <div class="mbody">
+          <div class="msb">
+            <div class="msbl"><div class="msblm">E</div><div class="msbln">Enrolliq</div></div>
+            <div class="msbsec">Analytics</div>
+            <div class="msbi"><span class="msbi-i">🔮</span> Predictor</div>
+            <div class="msbi on"><span class="msbi-i">📡</span> Referral ROI</div>
+            <div class="msbi"><span class="msbi-i">⚡</span> Speed Metrics</div>
+          </div>
+          <div class="mmain">
+            <div class="mpt">Referral Source Intelligence</div>
+            <div class="mps">All Studies · Last 90 days · Sorted by enrollment rate</div>
+            <div class="rthr"><div class="rth">Source</div><div class="rth">Leads</div><div class="rth">Enrolled</div><div class="rth">Rate</div><div class="rth">Trend</div></div>
+            <div class="rrow"><div class="rsrc"><div class="rsd" style="background:var(--grn)"></div>Physician Referral</div><div class="rnum">84</div><div class="rnum">31</div><div class="rrate" style="color:var(--grn)">36.9%</div><div class="rbc"><div class="rmb" style="width:70px;background:var(--grn)"></div></div></div>
+            <div class="rrow"><div class="rsrc"><div class="rsd" style="background:var(--teal)"></div>Community Outreach</div><div class="rnum">142</div><div class="rnum">36</div><div class="rrate" style="color:var(--teal)">25.4%</div><div class="rbc"><div class="rmb" style="width:52px;background:var(--teal)"></div></div></div>
+            <div class="rrow"><div class="rsrc"><div class="rsd" style="background:var(--gold)"></div>Patient Database</div><div class="rnum">67</div><div class="rnum">14</div><div class="rrate" style="color:var(--gold)">20.9%</div><div class="rbc"><div class="rmb" style="width:42px;background:var(--gold)"></div></div></div>
+            <div class="rrow"><div class="rsrc"><div class="rsd" style="background:var(--lav)"></div>Facebook Ads</div><div class="rnum">318</div><div class="rnum">18</div><div class="rrate" style="color:var(--lav)">5.7%</div><div class="rbc"><div class="rmb" style="width:12px;background:var(--lav)"></div></div></div>
+            <div class="rrow"><div class="rsrc"><div class="rsd" style="background:#f87171"></div>Google Ads</div><div class="rnum">204</div><div class="rnum">8</div><div class="rrate" style="color:#f87171">3.9%</div><div class="rbc"><div class="rmb" style="width:8px;background:#f87171"></div></div></div>
+            <div style="margin-top:16px;padding:14px;background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.15);border-radius:8px">
+              <div style="font-size:11px;color:var(--grn);font-weight:700;margin-bottom:4px">💡 Intelligence Insight</div>
+              <div style="font-size:11.5px;color:var(--cream2);line-height:1.55">Physician referrals convert at 9x the rate of digital ads. Shifting 20% of your ad budget toward physician outreach could yield an estimated <strong style="color:var(--grn)">+14 additional enrollments</strong> this quarter.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="how" id="how">
-  <div class="container">
-    <div style="text-align:center; margin-bottom:64px;">
-      <div class="section-label reveal" style="justify-content:center;">How It Works</div>
-      <h2 class="section-title reveal" style="text-align:center;">One system. <em>Complete visibility.</em></h2>
-      <p class="section-body reveal" style="margin: 0 auto; text-align:center;">Built around a simple but powerful idea — the patient is the center of everything. Every study, every interaction, every data point traces back to one profile.</p>
+  <div class="ctr">
+    <div style="text-align:center;margin-bottom:64px">
+      <div class="slbl reveal" style="justify-content:center">How It Works</div>
+      <h2 class="stitle reveal" style="text-align:center">One system.<br><em>Complete visibility.</em></h2>
+      <p class="sbody reveal" style="max-width:500px;margin:0 auto;text-align:center">Built around a single design principle — doing the work correctly and generating clean data are the same action.</p>
     </div>
-
-    <div class="how-grid">
-      <div class="how-card reveal">
-        <div class="how-step">01 / Capture</div>
-        <div class="how-card-icon">🎯</div>
-        <h3 class="how-card-title">One Patient Profile. Forever.</h3>
-        <p class="how-card-text">Every lead enters as a universal patient record — not a study record. When they're referred to a second study six months later, you see their full history: who contacted them, what they said, why they didn't enroll before. No duplicate data, no lost context.</p>
-      </div>
-
-      <div class="how-card reveal">
-        <div class="how-step">02 / Track</div>
-        <div class="how-card-icon">📋</div>
-        <h3 class="how-card-title">Append-Only Status History</h3>
-        <p class="how-card-text">Every status change is recorded — never overwritten. You can see that a patient was "Contacted" on March 3rd, "Scheduled" on March 10th, and "No Show" on March 15th. The full timeline is always there. This is the data that makes analytics possible.</p>
-      </div>
-
-      <div class="how-card reveal">
-        <div class="how-step">03 / Analyze</div>
-        <div class="how-card-icon">🔮</div>
-        <h3 class="how-card-title">Intelligence, Not Reports</h3>
-        <p class="how-card-text">Enrollment forecasts update in real time. The system knows your conversion rates, your outreach velocity, your screen fail patterns — and it tells you what you need to do before leadership has to ask. No exports. No pivot tables. Just answers.</p>
-      </div>
+    <div class="howg">
+      <div class="hwc reveal"><div class="hws">01 / CAPTURE</div><div class="hwi">🎯</div><h3 class="hwt">One Patient Profile. Forever.</h3><p class="hwb">Every lead enters as a universal patient record — not a study record. Referred to a second study six months later? Full history instantly. No duplicates, no lost context.</p></div>
+      <div class="hwc reveal"><div class="hws">02 / TRACK</div><div class="hwi">📋</div><h3 class="hwt">Append-Only History.</h3><p class="hwb">Every status change is a recorded event — never overwritten. The full timeline is always there. This single architectural decision is what makes real funnel analytics possible.</p></div>
+      <div class="hwc reveal"><div class="hws">03 / ANALYZE</div><div class="hwi">🔮</div><h3 class="hwt">Intelligence, Not Reports.</h3><p class="hwb">Enrollment forecasts, conversion rates, referral ROI, and speed metrics update automatically as work happens. Leadership's questions answer themselves. No exports. No waiting.</p></div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="features" id="features">
-  <div class="container">
-    <div class="features-header">
-      <div class="section-label reveal" style="justify-content:center;">Full Feature Set</div>
-      <h2 class="section-title reveal">Everything a site needs.<br><em>Nothing they don't.</em></h2>
-      <p class="section-body reveal">Designed with and for clinical research coordinators — the people who actually do the work.</p>
+  <div class="ctr">
+    <div class="fhdr">
+      <div class="slbl reveal" style="justify-content:center">Full Feature Set</div>
+      <h2 class="stitle reveal" style="text-align:center">Everything a site needs.<br><em>Nothing they don't.</em></h2>
+      <p class="sbody reveal" style="max-width:480px;margin:0 auto">Every feature passes one test: does this make the coordinator's job simpler AND give the analyst better data?</p>
     </div>
-
-    <div class="features-grid reveal">
-      <div class="feature-cell">
-        <span class="feature-icon">🧠</span>
-        <div class="feature-title">Enrollment Predictor</div>
-        <p class="feature-text">AI-powered forecasting tells you exactly how many leads you need to hit your enrollment target, based on your actual site's conversion history — not industry averages.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">👤</span>
-        <div class="feature-title">Universal Patient Profile</div>
-        <p class="feature-text">One record per patient across all studies and sites. Full interaction history, visit log, status timeline, and study branches — all in one place, never duplicated.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">📊</span>
-        <div class="feature-title">Live Funnel Dashboards</div>
-        <p class="feature-text">Real-time visibility into every stage of your recruitment pipeline, filterable by site, study, date range, referral source, and coordinator. Always current, no refresh needed.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">🔗</span>
-        <div class="feature-title">CTMS Integration Ready</div>
-        <p class="feature-text">Built with an open API architecture designed to connect to CRIO, REDCap, Veeva, and any CTMS platform. Enrolliq sits as the recruitment intelligence layer — compatible with whatever clinical system you already use.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">📡</span>
-        <div class="feature-title">Referral Source Intelligence</div>
-        <p class="feature-text">Track which referral sources bring the best patients — not just the most leads. See conversion rates, screen fail rates, and cost-per-enrollment broken down by every source you use.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">⚡</span>
-        <div class="feature-title">Speed & Response Metrics</div>
-        <p class="feature-text">Measure time-to-first-contact, contact-to-screen velocity, and coordinator response rates. Identify where leads are going cold and intervene before they drop out of the pipeline.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">🧪</span>
-        <div class="feature-title">Pre-Screening Engine</div>
-        <p class="feature-text">Configurable eligibility questionnaires per study. Coordinators run through inclusion/exclusion criteria at first contact — stopping unqualified leads before they take up appointment slots.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">💬</span>
-        <div class="feature-title">Integrated Communications</div>
-        <p class="feature-text">Send SMS and email directly from the patient profile. Every message sent is logged automatically to the interaction timeline — no copy-pasting into a separate CRM.</p>
-      </div>
-      <div class="feature-cell">
-        <span class="feature-icon">🏥</span>
-        <div class="feature-title">Multi-Site Network Control</div>
-        <p class="feature-text">Network admins see everything. Site admins see their sites. Recruiters see their patients. Role-based access that matches how your organization actually works, not how software vendors think it works.</p>
-      </div>
+    <div class="fgrid reveal">
+      <div class="fc"><span class="fci">🧠</span><div class="fct">Enrollment Predictor</div><p class="fcb">AI-powered forecasting based on your site's actual conversion history — not industry averages. Know how many leads you need before the quarter starts.</p></div>
+      <div class="fc"><span class="fci">👤</span><div class="fct">Universal Patient Profile</div><p class="fcb">One record per patient across all studies and sites. Full interaction history, visit log, status timeline, and study branches — never duplicated.</p></div>
+      <div class="fc"><span class="fci">📊</span><div class="fct">Live Funnel Dashboards</div><p class="fcb">Real-time visibility into every recruitment stage, filterable by site, study, date, referral source, and coordinator. Always current.</p></div>
+      <div class="fc"><span class="fci">🔗</span><div class="fct">CTMS Integration Ready</div><p class="fcb">Open API architecture connects to any CTMS. Enrolliq sits as the recruitment intelligence layer — compatible with what you already use.</p></div>
+      <div class="fc"><span class="fci">📡</span><div class="fct">Referral Intelligence</div><p class="fcb">Which sources bring the best patients — not just the most leads. Conversion rates and enrollment cost broken down by every source.</p></div>
+      <div class="fc"><span class="fci">⚡</span><div class="fct">Speed Metrics</div><p class="fcb">Time-to-first-contact, contact-to-screen velocity, response rates. See exactly where leads go cold before they drop out of the pipeline.</p></div>
+      <div class="fc"><span class="fci">🧪</span><div class="fct">Pre-Screening Engine</div><p class="fcb">Configurable eligibility questionnaires per study. Stop unqualified leads before they take appointment slots — every outcome logged automatically.</p></div>
+      <div class="fc"><span class="fci">💬</span><div class="fct">Integrated Communications</div><p class="fcb">Send SMS and email from the patient profile. Every message auto-logged to the interaction timeline. No copy-pasting into a separate CRM.</p></div>
+      <div class="fc"><span class="fci">🏥</span><div class="fct">Multi-Site Network Control</div><p class="fcb">Network admins see everything. Site admins see their sites. Recruiters see their patients. Role-based access that matches how your org actually works.</p></div>
     </div>
   </div>
 </section>
 
-<!-- INTEGRATIONS -->
 <section class="integrations" id="integrations">
-  <div class="container">
-    <div class="section-label reveal" style="justify-content:center;">Integration Architecture</div>
-    <h2 class="section-title reveal" style="text-align:center;">Works with your <em>existing stack.</em><br>Not instead of it.</h2>
-    <p class="section-body reveal" style="margin:0 auto; text-align:center; margin-bottom: 0;">
-      Enrolliq is designed as a recruitment intelligence layer — an open API that connects to the CTMS, EDC, and eSource platforms your sites already use. No ripping and replacing.
-    </p>
-
-    <div class="integrations-grid reveal">
-      <div class="integration-badge">
-        <div class="integration-badge-dot"></div>
-        CRIO (ClinicalResearch.io)
-      </div>
-      <div class="integration-badge">
-        <div class="integration-badge-dot"></div>
-        REDCap
-      </div>
-      <div class="integration-badge coming">
-        <div class="integration-badge-dot"></div>
-        Veeva Vault
-      </div>
-      <div class="integration-badge coming">
-        <div class="integration-badge-dot"></div>
-        Oracle CTMS
-      </div>
-      <div class="integration-badge coming">
-        <div class="integration-badge-dot"></div>
-        Medidata Rave
-      </div>
-      <div class="integration-badge">
-        <div class="integration-badge-dot"></div>
-        Twilio SMS
-      </div>
-      <div class="integration-badge">
-        <div class="integration-badge-dot"></div>
-        Resend / Email
-      </div>
-      <div class="integration-badge coming">
-        <div class="integration-badge-dot"></div>
-        Epic EHR
-      </div>
-      <div class="integration-badge">
-        <div class="integration-badge-dot"></div>
-        REST API (Custom)
-      </div>
+  <div class="ctr">
+    <div class="slbl reveal" style="justify-content:center">Integration Architecture</div>
+    <h2 class="stitle reveal" style="text-align:center">Works with your<br><em>existing stack.</em></h2>
+    <p class="sbody reveal" style="max-width:500px;margin:0 auto;text-align:center">Enrolliq is a recruitment intelligence layer — not a replacement for your CTMS. Open API connects to whatever clinical system your sites already use.</p>
+    <div class="ig reveal">
+      <div class="ib"><div class="idot"></div>CRIO</div>
+      <div class="ib"><div class="idot"></div>REDCap</div>
+      <div class="ib"><div class="idot"></div>Twilio SMS</div>
+      <div class="ib"><div class="idot"></div>Resend Email</div>
+      <div class="ib dim"><div class="idot"></div>Veeva Vault</div>
+      <div class="ib dim"><div class="idot"></div>Oracle CTMS</div>
+      <div class="ib dim"><div class="idot"></div>Medidata Rave</div>
+      <div class="ib dim"><div class="idot"></div>Epic EHR</div>
+      <div class="ib"><div class="idot"></div>REST API (Custom)</div>
     </div>
-
-    <p class="integrations-note reveal">
-      <strong>Green = planned at launch.</strong> &nbsp;Gray = on the roadmap. &nbsp;Don't see yours? <a href="#waitlist" style="color:var(--gold); text-decoration:none;">Let us know →</a>
-    </p>
+    <p class="in reveal"><strong style="color:var(--cream)">Bright = planned at launch.</strong> &nbsp;Dim = on the roadmap. &nbsp;Don't see yours? <a href="#waitlist">Let us know →</a></p>
   </div>
 </section>
 
-<!-- FOUNDER -->
 <section class="founder" id="founder">
-  <div class="container">
-    <div class="founder-card reveal">
-      <div class="founder-visual">
-        <div class="founder-avatar">V</div>
-        <div class="founder-name">Vasanth M.</div>
-        <div class="founder-role">Founder & Builder, Enrolliq</div>
-        <div class="founder-badges">
-          <span class="founder-badge">Data Engineer</span>
-          <span class="founder-badge">Clinical Research</span>
-          <span class="founder-badge">Site Operations</span>
-          <span class="founder-badge">Software Builder</span>
-          <span class="founder-badge">Data Analyst</span>
+  <div class="ctr">
+    <div class="fcard reveal">
+      <div class="fleft">
+        <div class="fav">V</div>
+        <div class="fn">Vasanth Manne</div>
+        <div class="fr">Founder · Enrolliq</div>
+        <div class="ftags">
+          <span class="ftag">Data Engineer</span><span class="ftag">Clinical Research</span>
+          <span class="ftag">Pipeline Builder</span><span class="ftag">Software Builder</span><span class="ftag">Site Operations</span>
         </div>
       </div>
-
-      <div class="founder-content">
-        <p class="founder-quote">
-          I built this because I lived the problem. Every month I watched coordinators fight systems, and every quarter leadership asked questions that took me days to answer — questions that should have been automatic.
-        </p>
-        <p class="founder-bio">
-          I'm a Data Engineer at Pinnacle Clinical Research, where I work inside the data pipeline of multi-site clinical trials. My job is answering the hard enrollment questions — how many leads we need, where the funnel is leaking, which sites are behind. 
-          <br><br>
-          I got tired of pulling the same answer from four different systems every time. So I built Enrolliq — a recruitment intelligence platform that treats patient data the way a data engineer would design it: as a unified, append-only, analytically structured system where good workflow produces clean data automatically.
-          <br><br>
-          This isn't a consultant's idea of what sites need. It's built from the inside, by someone who still works there.
-        </p>
-        <div class="founder-links">
-          <a href="https://linkedin.com" target="_blank" class="btn-ghost" style="padding: 10px 20px; font-size:13px;">
-            LinkedIn →
-          </a>
-          <a href="#waitlist" class="btn-primary" style="padding: 10px 20px; font-size:13px;">
-            Get Early Access
-          </a>
+      <div>
+        <p class="fq">I'm not a doctor or a researcher. I'm the person who handles the data — and I started noticing things that didn't add up.</p>
+        <p class="fb">I'm a Data Engineer at Pinnacle Clinical Research, building the ETL pipelines and analytics layers that power enrollment reporting across multi-site clinical trials. My job is to answer the questions leadership asks about recruitment — and for a long time, that meant days of manual work pulling from four different systems.<br><br>I started building Enrolliq because the problem I kept running into wasn't a hard technical problem. It was an architectural one. Nobody had designed patient tracking from a data-first perspective. So I decided to build it.</p>
+        <div class="fls">
+          <a href="https://linkedin.com/in/vasanthmanne" target="_blank" class="btno" style="padding:10px 20px;font-size:13px">LinkedIn →</a>
+          <a href="#waitlist" class="btng" style="padding:10px 20px;font-size:13px">Get Early Access</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WAITLIST -->
 <section class="waitlist" id="waitlist">
-  <div class="container">
-    <div class="section-label reveal" style="justify-content:center;">Early Access</div>
-    <h2 class="reveal">Be first to see<br><em>enrollment clarity.</em></h2>
-    <p class="waitlist-sub reveal">
-      Enrolliq is in active development. Join the waitlist to get early access, shape the product roadmap, and be the first site network to run on recruitment intelligence.
-    </p>
-
-    <div id="waitlist-form-wrap" class="reveal">
-      <form class="waitlist-form" onsubmit="handleWaitlist(event)">
-        <input
-          type="email"
-          class="waitlist-input"
-          placeholder="your@email.com"
-          required
-          id="waitlist-email"
-        >
-        <button type="submit" class="waitlist-submit">Join Waitlist</button>
+  <div class="ctr">
+    <div class="slbl reveal" style="justify-content:center">Early Access</div>
+    <h2 class="reveal">Be first.<br><em>Shape what gets built.</em></h2>
+    <p class="wlsub reveal">Enrolliq is in active development. Join the waitlist — especially if you work in clinical research operations or data.</p>
+    <div id="wlwrap" class="reveal">
+      <form class="wlf" onsubmit="handleWL(event)">
+        <input type="email" class="wli" placeholder="your@email.com" required id="wlemail">
+        <button type="submit" class="wls">Join Waitlist</button>
       </form>
-      <p class="waitlist-note">No spam. No sales calls. Just product updates when it matters.</p>
+      <p class="wln">No spam. No sales calls. Just updates when it matters.</p>
     </div>
-
-    <div class="waitlist-success reveal" id="waitlist-success">
-      ✓ You're on the list. We'll be in touch when early access opens.
-    </div>
+    <div class="wlok" id="wlok">✓ You're on the list. We'll be in touch when early access opens.</div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-logo">Enroll<span>iq</span></div>
-    <div class="footer-tagline">Recruitment Intelligence for Clinical Trials</div>
-    <ul class="footer-links">
+  <div class="ctr">
+    <div class="ftlo">Enroll<span>iq</span></div>
+    <div class="fttag">Recruitment Intelligence for Clinical Trials</div>
+    <ul class="ftlinks">
       <li><a href="#problem">Problem</a></li>
-      <li><a href="#platform">Platform</a></li>
+      <li><a href="#screens">Platform</a></li>
       <li><a href="#how">How It Works</a></li>
       <li><a href="#founder">About</a></li>
       <li><a href="#waitlist">Early Access</a></li>
     </ul>
-    <div class="footer-copy">© 2025 Enrolliq. All rights reserved. · Built by a clinical data engineer who got tired of waiting.</div>
+    <div class="ftcopy">© 2025 Enrolliq · Built by a data engineer who got tired of waiting.</div>
   </div>
 </footer>
 
 <script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.08 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Platform tabs
-  document.querySelectorAll('.platform-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-    });
+function showS(id,btn){
+  document.querySelectorAll('.spanel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('sc-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')});
+},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+function handleWL(e){
+  e.preventDefault();
+  document.getElementById('wlwrap').style.display='none';
+  document.getElementById('wlok').style.display='block';
+}
+const secs=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.style.color=a.getAttribute('href')==='#'+cur?'var(--cream)':'';
   });
-
-  // Waitlist form
-  function handleWaitlist(e) {
-    e.preventDefault();
-    const email = document.getElementById('waitlist-email').value;
-    document.getElementById('waitlist-form-wrap').style.display = 'none';
-    document.getElementById('waitlist-success').style.display = 'block';
-    console.log('Waitlist signup:', email);
-    // Connect to your email service here
-  }
-
-  // Smooth nav highlight
-  const sections = document.querySelectorAll('section[id]');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-      if (window.scrollY >= section.offsetTop - 100) current = section.id;
-    });
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--cream)' : '';
-    });
-  });
+});
 </script>
 </body>
 </html>
