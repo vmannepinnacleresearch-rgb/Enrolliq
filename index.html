@@ -310,9 +310,9 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
 .ftcopy{font-size:11.5px;color:var(--gray);opacity:.5}
 
 /* REVEAL */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-.reveal.v{opacity:1;transform:translateY(0)}
-.reveal.v *{visibility:visible}
+.reveal{opacity:1;transform:none}
+
+
 
 @media print{.reveal{opacity:1!important;transform:none!important}}
 @media(max-width:960px){
@@ -826,10 +826,10 @@ function showS(id,btn){
   document.getElementById('sc-'+id).classList.add('on');
   btn.classList.add('on');
 }
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')});
-},{threshold:0,rootMargin:"0px 0px -40px 0px"});
-document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
+
+  
+
+
 setTimeout(()=>{document.querySelectorAll(".reveal").forEach(el=>el.classList.add("v"));},800);
 async function handleWL(e){
   e.preventDefault();
