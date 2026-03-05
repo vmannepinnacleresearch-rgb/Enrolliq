@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --ink:#080c18;--ink2:#0f1424;--ink3:#161c30;--ink4:#1e2640;
   --gold:#c8a951;--goldl:#e2c97e;--golddim:rgba(200,169,81,.10);--goldbdr:rgba(200,169,81,.22);
   --teal:#34d4be;--tealdim:rgba(52,212,190,.08);
@@ -45,7 +45,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
 .hero h1{font-family:var(--serif);font-size:clamp(48px,8vw,100px);font-weight:300;line-height:1.02;letter-spacing:-2px;color:var(--cream);max-width:960px;animation:up .7s .1s ease both}
 .hero h1 em{font-style:italic;color:var(--gold);font-weight:400}
-.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--grayl);max-width:540px;margin-top:28px;font-weight:300;line-height:1.75;animation:up .7s .2s ease both}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--grayl);max-width:580px;margin-top:28px;font-weight:300;line-height:1.75;animation:up .7s .2s ease both}
 .hstats{display:flex;gap:0;margin-top:60px;border:1px solid var(--bdr);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.018);animation:up .7s .3s ease both}
 .hs{padding:24px 44px;text-align:center;border-right:1px solid var(--bdr)}
 .hs:last-child{border-right:none}
@@ -74,8 +74,17 @@ section{position:relative;z-index:1}
 .stitle em{font-style:italic;color:var(--gold)}
 .sbody{font-size:16.5px;color:var(--grayl);line-height:1.75;font-weight:300}
 
+/* WHO WE SERVE */
+.serve{padding:80px 0 0}
+.serve-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+.serve-card{background:rgba(255,255,255,.022);border:1px solid var(--bdr);border-radius:12px;padding:24px;transition:all .2s}
+.serve-card:hover{border-color:var(--goldbdr);background:rgba(255,255,255,.04)}
+.serve-icon{font-size:24px;margin-bottom:12px}
+.serve-title{font-size:14px;font-weight:700;color:var(--cream);margin-bottom:7px}
+.serve-text{font-size:12.5px;color:var(--grayl);line-height:1.65}
+
 /* PROBLEM */
-.problem{padding:130px 0}
+.problem{padding:100px 0}
 .prob-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:72px}
 .prob-cards{display:flex;flex-direction:column;gap:14px}
 .pc{background:rgba(255,255,255,.025);border:1px solid var(--bdr);border-radius:12px;padding:26px 28px;position:relative;overflow:hidden;transition:border-color .2s,background .2s}
@@ -84,10 +93,12 @@ section{position:relative;z-index:1}
 .pc-ico{font-size:20px;margin-bottom:10px}
 .pc-t{font-size:14.5px;font-weight:700;color:var(--cream);margin-bottom:7px}
 .pc-b{font-size:13px;color:var(--grayl);line-height:1.65}
+.pc-src{font-size:10px;color:var(--gray);font-family:var(--mono);margin-top:8px;opacity:.7}
 .bigstat{background:linear-gradient(145deg,rgba(200,169,81,.07),rgba(52,212,190,.04));border:1px solid var(--goldbdr);border-radius:20px;padding:48px;margin-bottom:16px;text-align:center}
 .bignum{font-family:var(--serif);font-size:88px;font-weight:300;color:var(--gold);line-height:1;letter-spacing:-3px}
 .biglbl{font-size:15px;color:var(--grayl);margin-top:14px;line-height:1.6}
 .biglbl strong{color:var(--cream)}
+.bigsrc{font-size:10px;color:var(--gray);font-family:var(--mono);margin-top:10px;opacity:.65}
 .smrow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .sms{background:rgba(255,255,255,.025);border:1px solid var(--bdr);border-radius:12px;padding:22px;text-align:center}
 .smsn{font-family:var(--serif);font-size:36px;font-weight:300;color:var(--teal);line-height:1}
@@ -134,8 +145,6 @@ section{position:relative;z-index:1}
 .kv{font-family:var(--serif);font-size:28px;font-weight:300;color:var(--cream);line-height:1}
 .kd{font-size:10px;margin-top:4px}
 .up{color:var(--grn)}.dn{color:#f87171}
-
-/* CHARTS */
 .crow{display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
 .cc{background:rgba(255,255,255,.02);border:1px solid var(--bdr);border-radius:10px;padding:18px}
 .cct{font-size:11px;font-weight:700;color:var(--cream);margin-bottom:16px;letter-spacing:.02em}
@@ -149,7 +158,7 @@ section{position:relative;z-index:1}
 .cvp{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--teal)}
 .cvl{font-size:9.5px;color:var(--gray);margin-top:2px;letter-spacing:.04em}
 
-/* PATIENT PROFILE */
+/* PATIENT */
 .phdr{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--bdr)}
 .pav{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--golddim),var(--tealdim));border:1px solid var(--goldbdr);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;color:var(--gold);flex-shrink:0}
 .pname{font-family:var(--serif);font-size:20px;color:var(--cream);margin-bottom:2px}
@@ -172,7 +181,6 @@ section{position:relative;z-index:1}
 .pill{padding:3px 10px;border-radius:100px;font-size:10px;font-weight:600}
 .pg{background:rgba(74,222,128,.1);color:var(--grn);border:1px solid rgba(74,222,128,.2)}
 .pa{background:var(--golddim);color:var(--gold);border:1px solid var(--goldbdr)}
-.pb{background:rgba(167,139,250,.1);color:var(--lav);border:1px solid rgba(167,139,250,.2)}
 .pgy{background:rgba(255,255,255,.05);color:var(--gray);border:1px solid var(--bdr)}
 .tli{display:flex;gap:12px;margin-bottom:14px}
 .tld{display:flex;flex-direction:column;align-items:center}
@@ -305,29 +313,25 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .reveal.v{opacity:1;transform:translateY(0)}
 
-/* RESPONSIVE */
 @media(max-width:960px){
-  nav{padding:16px 24px}
-  .nav-links{display:none}
+  nav{padding:16px 24px}.nav-links{display:none}
   .prob-layout{grid-template-columns:1fr;gap:40px}
   .howg{grid-template-columns:1fr}
   .fgrid{grid-template-columns:1fr 1fr}
-  .mbody{grid-template-columns:1fr}
-  .msb{display:none}
-  .krow{grid-template-columns:1fr 1fr}
-  .crow{grid-template-columns:1fr}
+  .mbody{grid-template-columns:1fr}.msb{display:none}
+  .krow{grid-template-columns:1fr 1fr}.crow{grid-template-columns:1fr}
   .fcard{grid-template-columns:1fr;padding:36px;gap:40px}
   .wlf{flex-direction:column}
   .hstats{flex-direction:column;border:none}
   .hs{border:1px solid var(--bdr);border-radius:10px;margin-bottom:10px}
+  .serve-grid{grid-template-columns:1fr 1fr}
   .pinps{grid-template-columns:1fr}
   .pgrid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
-  .fgrid{grid-template-columns:1fr}
-  .hero-acts{flex-direction:column}
-  .rthr{display:none}
-  .rrow{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}.hero-acts{flex-direction:column}
+  .rthr{display:none}.rrow{grid-template-columns:1fr 1fr}
+  .serve-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -336,7 +340,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
 <nav>
   <a class="logo" href="#"><div class="lmark">E</div><div class="ltext">Enroll<span>iq</span></div></a>
   <ul class="nav-links">
-    <li><a href="#problem">Problem</a></li>
+    <li><a href="#problem">The Problem</a></li>
     <li><a href="#screens">Platform</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#integrations">Integrations</a></li>
@@ -345,16 +349,17 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
   <a href="#waitlist" class="nav-btn">Request Early Access</a>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="orb1"></div><div class="orb2"></div><div class="orb3"></div>
   <div class="badge"><div class="bdot"></div>Now in Development · Early Access Open</div>
-  <h1>Recruitment Intelligence<br>for <em>Clinical Trials</em></h1>
-  <p class="hero-sub">One patient. One profile. Every study, every site, every interaction connected. Real-time enrollment analytics before leadership has to ask.</p>
+  <h1>Smarter Recruitment.<br>Faster <em>Enrollment.</em></h1>
+  <p class="hero-sub">Enrolliq gives sponsors, CROs, and research sites the recruitment intelligence they need — real-time funnel visibility, enrollment forecasting, and a single patient record across every study.</p>
   <div class="hstats">
-    <div class="hs"><div class="hsn">80%</div><div class="hsl">of trials miss enrollment targets</div></div>
-    <div class="hs"><div class="hsn">55%</div><div class="hsl">terminated due to low enrollment</div></div>
+    <div class="hs"><div class="hsn">80%</div><div class="hsl">of trials miss enrollment timelines</div></div>
+    <div class="hs"><div class="hsn">55%</div><div class="hsl">of terminated trials cite low enrollment</div></div>
     <div class="hs"><div class="hsn">$8M</div><div class="hsl">cost per day of trial delay</div></div>
-    <div class="hs"><div class="hsn">5%</div><div class="hsl">of eligible patients ever enroll</div></div>
+    <div class="hs"><div class="hsn">5%</div><div class="hsl">of eligible patients ever participate</div></div>
   </div>
   <div class="hero-acts">
     <a href="#waitlist" class="btng">Get Early Access</a>
@@ -362,44 +367,111 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
   </div>
 </section>
 
+<!-- TICKER -->
 <div class="tkwrap">
   <div class="tk">
-    <span class="tki">One Patient Profile</span><span class="tki">Multi-Study Branches</span><span class="tki">Append-Only History</span><span class="tki">Live Funnel Analytics</span><span class="tki">Enrollment Forecasting</span><span class="tki">Screen Fail Intelligence</span><span class="tki">Referral Source ROI</span><span class="tki">CTMS Integration Ready</span><span class="tki">AI-Assisted Outreach</span><span class="tki">HIPAA Compliant</span>
-    <span class="tki">One Patient Profile</span><span class="tki">Multi-Study Branches</span><span class="tki">Append-Only History</span><span class="tki">Live Funnel Analytics</span><span class="tki">Enrollment Forecasting</span><span class="tki">Screen Fail Intelligence</span><span class="tki">Referral Source ROI</span><span class="tki">CTMS Integration Ready</span><span class="tki">AI-Assisted Outreach</span><span class="tki">HIPAA Compliant</span>
+    <span class="tki">Sponsor Visibility</span><span class="tki">Site Performance Benchmarking</span><span class="tki">One Patient Profile</span><span class="tki">Append-Only Status History</span><span class="tki">Live Funnel Analytics</span><span class="tki">Enrollment Forecasting</span><span class="tki">Screen Fail Tracking</span><span class="tki">Referral Source ROI</span><span class="tki">CTMS Integration Ready</span><span class="tki">HIPAA Compliant</span>
+    <span class="tki">Sponsor Visibility</span><span class="tki">Site Performance Benchmarking</span><span class="tki">One Patient Profile</span><span class="tki">Append-Only Status History</span><span class="tki">Live Funnel Analytics</span><span class="tki">Enrollment Forecasting</span><span class="tki">Screen Fail Tracking</span><span class="tki">Referral Source ROI</span><span class="tki">CTMS Integration Ready</span><span class="tki">HIPAA Compliant</span>
   </div>
 </div>
 
+<!-- WHO WE SERVE -->
+<section class="serve" id="serve">
+  <div class="ctr">
+    <div class="slbl reveal" style="justify-content:center">Who It's Built For</div>
+    <h2 class="stitle reveal" style="text-align:center;max-width:600px;margin:0 auto 8px">Every stakeholder in the<br><em>recruitment funnel.</em></h2>
+    <p class="sbody reveal" style="text-align:center;max-width:500px;margin:0 auto">From the sponsor tracking study performance across sites, to the coordinator managing daily patient interactions — Enrolliq gives each role exactly what they need.</p>
+    <div class="serve-grid reveal">
+      <div class="serve-card">
+        <div class="serve-icon">🏢</div>
+        <div class="serve-title">Sponsors & CROs</div>
+        <div class="serve-text">Real-time enrollment forecasting, site performance benchmarking, and risk identification across your entire study portfolio — without waiting for site reports.</div>
+      </div>
+      <div class="serve-card">
+        <div class="serve-icon">🏥</div>
+        <div class="serve-title">Site Directors</div>
+        <div class="serve-text">Network-wide visibility into funnel performance, coordinator activity, and referral source ROI. Know which sites are on track and which need support — proactively.</div>
+      </div>
+      <div class="serve-card">
+        <div class="serve-icon">📋</div>
+        <div class="serve-title">Study Coordinators</div>
+        <div class="serve-text">A clean, intuitive workflow designed to reduce administrative burden — not add to it. Coordinators log interactions naturally and the analytics build themselves.</div>
+      </div>
+      <div class="serve-card">
+        <div class="serve-icon">🔬</div>
+        <div class="serve-title">Data & Operations Teams</div>
+        <div class="serve-text">Structured, append-only data from day one. No more reconstructing enrollment history from four systems. Clean pipelines. Reliable metrics. Reports that exist automatically.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
 <section class="problem" id="problem">
   <div class="ctr">
     <div class="prob-layout">
       <div>
-        <div class="slbl reveal">The Problem</div>
-        <h2 class="stitle reveal">Clinical recruitment<br>is flying <em>blind</em></h2>
-        <p class="sbody reveal" style="margin-bottom:40px">Sites run on fragmented systems, inconsistent workflows, and gut instinct. The data exists — locked in silos, overwritten, and impossible to act on at scale.</p>
+        <div class="slbl reveal">The Industry Problem</div>
+        <h2 class="stitle reveal">Patient recruitment has a<br><em>data infrastructure gap.</em></h2>
+        <p class="sbody reveal" style="margin-bottom:40px">Published research consistently identifies the same root causes behind enrollment failures. The technology exists to solve them — it just hasn't been applied to this layer of the problem yet.</p>
         <div class="prob-cards">
-          <div class="pc reveal"><div class="pc-ico">🗑️</div><div class="pc-t">Status history is thrown away</div><div class="pc-b">Every status transition — the most analytically valuable data in the system — gets overwritten and discarded. You can never reconstruct where patients were or how long transitions took.</div></div>
-          <div class="pc reveal"><div class="pc-ico">👤</div><div class="pc-t">No unified patient identity</div><div class="pc-b">A patient referred for Study A and Study B exists as two separate records. No history, no context, no institutional memory across studies. Every referral starts from zero.</div></div>
-          <div class="pc reveal"><div class="pc-ico">📐</div><div class="pc-t">No standardization across sites</div><div class="pc-b">Every site defines statuses differently. Incomparable data means no cross-site benchmarking, no learning, no systematic improvement. You can't fix what you can't measure consistently.</div></div>
-          <div class="pc reveal"><div class="pc-ico">⏳</div><div class="pc-t">Enrollment forecasts take days to build</div><div class="pc-b">Answering "are we on track?" means pulling from 4 systems, building a spreadsheet, and producing a report that's already stale. Every quarter. Same question. Same manual work.</div></div>
+          <div class="pc reveal">
+            <div class="pc-ico">🗑️</div>
+            <div class="pc-t">Recruitment status history is not preserved</div>
+            <div class="pc-b">Industry-standard CTMS platforms store a patient's current status — not their journey. Every transition is overwritten. The analytical value of how patients move through the funnel is permanently lost, making conversion analysis and process improvement nearly impossible.</div>
+            <div class="pc-src">Source: Documented across clinical CTMS architecture reviews</div>
+          </div>
+          <div class="pc reveal">
+            <div class="pc-ico">👤</div>
+            <div class="pc-t">No unified patient identity across studies</div>
+            <div class="pc-b">A patient referred across two studies at the same site exists as two unconnected records. Prior contact history, eligibility notes, and interaction context are invisible to the team managing the second referral. Sites lose institutional knowledge with every handoff.</div>
+            <div class="pc-src">Source: Common across multi-study site network operations</div>
+          </div>
+          <div class="pc reveal">
+            <div class="pc-ico">📐</div>
+            <div class="pc-t">Inconsistent workflows prevent benchmarking</div>
+            <div class="pc-b">When sites define the same status differently, data becomes incomparable across a network. Sponsors and CROs cannot identify what's working, which sites outperform, or where process improvements would have the most impact.</div>
+            <div class="pc-src">Source: Tufts CSDD multi-site performance research</div>
+          </div>
+          <div class="pc reveal">
+            <div class="pc-ico">📊</div>
+            <div class="pc-t">Enrollment visibility arrives too late for sponsors</div>
+            <div class="pc-b">By the time sponsors and CROs receive site enrollment reports, the data is already weeks old. Studies that are falling behind are identified after the window for easy intervention has passed — costing time, budget, and patient access to trials.</div>
+            <div class="pc-src">Source: Applied Clinical Trials, Tufts CSDD enrollment performance studies</div>
+          </div>
         </div>
       </div>
       <div>
-        <div class="bigstat reveal"><div class="bignum">3 days</div><p class="biglbl">Average time to answer <strong>"how many leads do we need to hit enrollment?"</strong> — a question that should update in real time, automatically.</p></div>
+        <div class="bigstat reveal">
+          <div class="bignum">$1.89B</div>
+          <p class="biglbl">spent annually on patient recruitment in the US alone — with <strong>80% of trials still missing their enrollment timelines.</strong></p>
+          <div class="bigsrc">Source: Tufts Center for the Study of Drug Development</div>
+        </div>
         <div class="smrow reveal">
-          <div class="sms"><div class="smsn">28%</div><div class="smsl">Coordinator workforce lost since 2018</div></div>
-          <div class="sms"><div class="smsn">22+</div><div class="smsl">System logins per coordinator per study</div></div>
+          <div class="sms"><div class="smsn">28%</div><div class="smsl">Coordinator workforce decline since 2018</div></div>
+          <div class="sms"><div class="smsn">$1,200</div><div class="smsl">Average cost per screen failure</div></div>
+        </div>
+        <div style="margin-top:14px" class="reveal">
+          <div class="sms" style="text-align:left;padding:20px 24px">
+            <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">What sponsors need — in real time</div>
+            <div style="font-size:12.5px;color:var(--grayl);line-height:1.7">
+              Are we on track to hit enrollment? Which sites are performing? Where are patients dropping out? What is our screen fail rate by study? Which referral sources are producing enrolled patients — not just leads?<br><br>
+              <span style="color:var(--cream);font-weight:500">These questions should have live answers. Enrolliq makes that possible.</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- APP SCREENS -->
 <section class="screens" id="screens">
   <div class="ctr">
     <div class="scr-hdr">
       <div class="slbl reveal" style="justify-content:center">The Platform</div>
       <h2 class="stitle reveal" style="text-align:center">Five views.<br><em>Complete clarity.</em></h2>
-      <p class="sbody reveal" style="max-width:520px;margin:0 auto">Every screen designed for two audiences simultaneously — coordinators who need simplicity, analysts who need clean structured data. No compromise.</p>
+      <p class="sbody reveal" style="max-width:540px;margin:0 auto">Built for every role in the recruitment funnel — coordinators get simplicity, sponsors and operations teams get structured data and live analytics. No trade-off required.</p>
     </div>
     <div class="stabs reveal">
       <button class="stab on" onclick="showS('dashboard',this)">Enrollment Dashboard</button>
@@ -429,17 +501,17 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
             <div class="msbi"><span class="msbi-i">🔬</span> Studies</div>
           </div>
           <div class="mmain">
-            <div class="mpt">Welcome back, Vasanth 👋</div>
-            <div class="mps">All Sites · All Studies · Last 30 days · Auto-refreshing</div>
+            <div class="mpt">Study Portfolio Overview</div>
+            <div class="mps">All Sites · All Studies · Live · Auto-refreshing every 5 min</div>
             <div class="krow">
-              <div class="kpi"><div class="kl">Total Leads</div><div class="kv">1,284</div><div class="kd up">↑ 12% vs last month</div></div>
-              <div class="kpi"><div class="kl">Screened</div><div class="kv">342</div><div class="kd up">↑ 8% vs last month</div></div>
+              <div class="kpi"><div class="kl">Active Leads</div><div class="kv">1,284</div><div class="kd up">↑ 12% vs last month</div></div>
+              <div class="kpi"><div class="kl">In Screening</div><div class="kv">342</div><div class="kd up">↑ 8% vs last month</div></div>
               <div class="kpi"><div class="kl">Enrolled</div><div class="kv">87</div><div class="kd up">↑ 5% vs last month</div></div>
               <div class="kpi"><div class="kl">Screen Fail Rate</div><div class="kv">42%</div><div class="kd dn">↑ 3% · flag for review</div></div>
             </div>
             <div class="crow">
               <div class="cc">
-                <div class="cct">Recruitment Funnel · Alzheimer's Study A · All Sites</div>
+                <div class="cct">Recruitment Funnel · Alzheimer's Study A · All Sites · Live</div>
                 <div class="fbr"><div class="fbl">New Lead</div><div class="fbt"><div class="fbf" style="width:100%;background:var(--gold)"></div></div><div class="fbn">284</div></div>
                 <div class="fbr"><div class="fbl">Contacted</div><div class="fbt"><div class="fbf" style="width:72%;background:var(--lav)"></div></div><div class="fbn">204</div></div>
                 <div class="fbr"><div class="fbl">Pre-Screened</div><div class="fbt"><div class="fbf" style="width:55%;background:var(--teal)"></div></div><div class="fbn">156</div></div>
@@ -448,7 +520,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
                 <div class="fbr"><div class="fbl">Enrolled</div><div class="fbt"><div class="fbf" style="width:11%;background:var(--grn)"></div></div><div class="fbn">34</div></div>
               </div>
               <div class="cc">
-                <div class="cct">Conversion Rates · This Study</div>
+                <div class="cct">Conversion Rates · Sponsor View</div>
                 <div class="cvg">
                   <div class="cvc"><div class="cvp">71.8%</div><div class="cvl">Lead → Contact</div></div>
                   <div class="cvc"><div class="cvp">76.5%</div><div class="cvl">Contact → Pre-Screen</div></div>
@@ -483,8 +555,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
                 <div class="pmeta">
                   <span class="ptag">San Antonio, TX</span>
                   <span class="ptag">First contact: Jan 14, 2025</span>
-                  <span class="ptag g">3 Study Branches</span>
-                  <span class="ptag">ID #4821</span>
+                  <span class="ptag g">3 Study Branches · Full History</span>
                 </div>
               </div>
             </div>
@@ -493,21 +564,21 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
                 <div class="ict">Contact Info</div>
                 <div class="ir"><span class="ik">Phone</span><span class="iv">(210) 555-0192</span></div>
                 <div class="ir"><span class="ik">Email</span><span class="iv">m.davis@email.com</span></div>
-                <div class="ir"><span class="ik">Preferred</span><span class="iv">Morning calls</span></div>
+                <div class="ir"><span class="ik">Preferred contact</span><span class="iv">Morning calls</span></div>
                 <div class="ir"><span class="ik">Referred by</span><span class="iv">Physician Referral</span></div>
               </div>
               <div class="ic">
-                <div class="ict">Interaction Timeline</div>
+                <div class="ict">Preserved Interaction Timeline</div>
                 <div class="tli"><div class="tld"><div class="tldt"></div><div class="tldl"></div></div><div class="tlc"><div class="tla">Enrolled — Memory Study B</div><div class="tlt">Mar 01, 2025 · 09:14am</div></div></div>
-                <div class="tli"><div class="tld"><div class="tldt" style="background:var(--teal)"></div><div class="tldl"></div></div><div class="tlc"><div class="tla">Screening Visit Completed</div><div class="tlt">Feb 22 · 02:30pm</div><div class="tln">All labs within range</div></div></div>
-                <div class="tli"><div class="tld"><div class="tldt" style="background:var(--lav)"></div></div><div class="tlc"><div class="tla">SMS sent — appointment reminder</div><div class="tlt">Feb 20 · 10:02am</div></div></div>
+                <div class="tli"><div class="tld"><div class="tldt" style="background:var(--teal)"></div><div class="tldl"></div></div><div class="tlc"><div class="tla">Screening Visit Completed</div><div class="tlt">Feb 22 · 02:30pm</div><div class="tln">All labs within range — eligible</div></div></div>
+                <div class="tli"><div class="tld"><div class="tldt" style="background:var(--lav)"></div></div><div class="tlc"><div class="tla">SMS reminder sent</div><div class="tlt">Feb 20 · 10:02am · Auto-logged</div></div></div>
               </div>
             </div>
             <div class="ic pall">
-              <div class="ict">Study Branches — Full History Always Preserved</div>
-              <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--grn)"></div><div><div class="sbrn">Memory Study B — Phase II</div><div class="sbrd2">Started Jan 14, 2025</div></div></div><span class="pill pg">Enrolled</span></div>
+              <div class="ict">Study Branches — Every Status Change Preserved, Never Overwritten</div>
+              <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--grn)"></div><div><div class="sbrn">Memory Study B — Phase II</div><div class="sbrd2">Started Jan 14, 2025 · Full history preserved</div></div></div><span class="pill pg">Enrolled</span></div>
               <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--gold)"></div><div><div class="sbrn">Alzheimer's Study A — Phase III</div><div class="sbrd2">Started Mar 04, 2025</div></div></div><span class="pill pa">Pre-Screening</span></div>
-              <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--gray)"></div><div><div class="sbrn">Obesity Study C — Phase II</div><div class="sbrd2">Sep 2024 — history preserved</div></div></div><span class="pill pgy">Screen Failed · BMI criteria</span></div>
+              <div class="sbr"><div class="sbrl"><div class="sbrd" style="background:var(--gray)"></div><div><div class="sbrn">Obesity Study C — Phase II</div><div class="sbrd2">Sep 2024 · Screen fail reason logged</div></div></div><span class="pill pgy">Screen Failed · BMI criteria</span></div>
             </div>
           </div>
         </div>
@@ -529,8 +600,8 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
           </div>
           <div class="mmain">
             <div class="mpt">Pre-Screening Tool</div>
-            <div class="mps">Alzheimer's Study A · Phase III · Site 2</div>
-            <div class="scrstudy"><div><div class="ssn">Alzheimer's Study A — Phase III</div><div style="font-size:10.5px;color:var(--gold);margin-top:3px">Target: 40 enrolled · 12 remaining</div></div><span class="pill pa">Active</span></div>
+            <div class="mps">Alzheimer's Study A · Phase III · Site 2 · Coordinator view</div>
+            <div class="scrstudy"><div><div class="ssn">Alzheimer's Study A — Phase III</div><div style="font-size:10.5px;color:var(--gold);margin-top:3px">Sponsor target: 40 enrolled · 12 remaining · On track</div></div><span class="pill pa">Active</span></div>
             <div class="sprg"><div class="sprl"><span>Question 3 of 7</span><span>43% complete</span></div><div class="sprb"><div class="sprf" style="width:43%"></div></div></div>
             <div class="sq">
               <div class="sqt">3. Has the patient been diagnosed with mild cognitive impairment (MCI) or early-stage Alzheimer's by a licensed physician?</div>
@@ -540,7 +611,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
                 <div class="sqo"><div class="sqr"></div><span class="sqot">Unsure — patient is checking with their doctor</span></div>
               </div>
             </div>
-            <div class="sqres"><div class="sqri">✅</div><div class="sqrt">Likely Eligible — Continue to Scheduling</div><div class="sqrs">Passed 3 of 3 criteria reviewed · 4 remaining</div></div>
+            <div class="sqres"><div class="sqri">✅</div><div class="sqrt">Likely Eligible — Continue to Scheduling</div><div class="sqrs">Passed 3 of 3 criteria reviewed · 4 remaining · All outcomes auto-logged</div></div>
           </div>
         </div>
       </div>
@@ -560,23 +631,23 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
           </div>
           <div class="mmain">
             <div class="mpt">Enrollment Predictor</div>
-            <div class="mps">Based on your site's actual historical conversion rates</div>
+            <div class="mps">Built on your site's actual historical conversion data — not industry averages</div>
             <div class="pinps">
               <div><div class="plbl">Study</div><div class="pinp">Alzheimer's Study A</div></div>
-              <div><div class="plbl">Enrollment Target</div><div class="pinp">40 patients</div></div>
+              <div><div class="plbl">Sponsor Target</div><div class="pinp">40 patients</div></div>
               <div><div class="plbl">Currently Enrolled</div><div class="pinp">28 patients</div></div>
-              <div><div class="plbl">Target Close Date</div><div class="pinp">June 30, 2025</div></div>
+              <div><div class="plbl">Sponsor Close Date</div><div class="pinp">June 30, 2025</div></div>
             </div>
             <div class="pres">
-              <div class="prest">📊 Prediction · Based on Last 90 Days of Site Data</div>
+              <div class="prest">📊 Live Forecast · Based on Last 90 Days of Site Conversion Data</div>
               <div class="prr"><span class="prrl">Additional patients needed</span><span class="prrv ac">12 more</span></div>
-              <div class="prr"><span class="prrl">Leads required at 28% conversion</span><span class="prrv ac">43 leads</span></div>
+              <div class="prr"><span class="prrl">Leads required at site's 28% conversion rate</span><span class="prrv ac">43 leads</span></div>
               <div class="prr"><span class="prrl">Projected completion at current pace</span><span class="prrv wn">Aug 14, 2025</span></div>
-              <div class="prr"><span class="prrl">Days behind target</span><span class="prrv" style="color:#f87171">45 days</span></div>
+              <div class="prr"><span class="prrl">Days behind sponsor target</span><span class="prrv" style="color:#f87171">45 days</span></div>
             </div>
-            <div class="palt"><span class="palti">⚠️</span><span class="paltt">At your current lead intake of 3.2/week, you will miss the June 30 deadline by ~45 days. To close on time, increase new leads to <strong>6.8/week</strong> starting this week.</span></div>
+            <div class="palt"><span class="palti">⚠️</span><span class="paltt">At current lead intake of 3.2/week, this site will miss the sponsor's June 30 deadline by ~45 days. Increasing new leads to <strong>6.8/week</strong> this week closes the gap on time.</span></div>
             <div style="margin-top:16px">
-              <div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;font-weight:700">Weekly enrollment pace vs. target</div>
+              <div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;font-weight:700">Weekly enrollment pace vs. sponsor target</div>
               <div class="pbars">
                 <div class="pbar" style="height:30%;background:var(--gold);opacity:.7"></div>
                 <div class="pbar" style="height:45%;background:var(--gold);opacity:.75"></div>
@@ -609,7 +680,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
           </div>
           <div class="mmain">
             <div class="mpt">Referral Source Intelligence</div>
-            <div class="mps">All Studies · Last 90 days · Sorted by enrollment rate</div>
+            <div class="mps">Sponsor & CRO view · All Sites · Last 90 days · Sorted by enrollment conversion</div>
             <div class="rthr"><div class="rth">Source</div><div class="rth">Leads</div><div class="rth">Enrolled</div><div class="rth">Rate</div><div class="rth">Trend</div></div>
             <div class="rrow"><div class="rsrc"><div class="rsd" style="background:var(--grn)"></div>Physician Referral</div><div class="rnum">84</div><div class="rnum">31</div><div class="rrate" style="color:var(--grn)">36.9%</div><div class="rbc"><div class="rmb" style="width:70px;background:var(--grn)"></div></div></div>
             <div class="rrow"><div class="rsrc"><div class="rsd" style="background:var(--teal)"></div>Community Outreach</div><div class="rnum">142</div><div class="rnum">36</div><div class="rrate" style="color:var(--teal)">25.4%</div><div class="rbc"><div class="rmb" style="width:52px;background:var(--teal)"></div></div></div>
@@ -617,8 +688,8 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
             <div class="rrow"><div class="rsrc"><div class="rsd" style="background:var(--lav)"></div>Facebook Ads</div><div class="rnum">318</div><div class="rnum">18</div><div class="rrate" style="color:var(--lav)">5.7%</div><div class="rbc"><div class="rmb" style="width:12px;background:var(--lav)"></div></div></div>
             <div class="rrow"><div class="rsrc"><div class="rsd" style="background:#f87171"></div>Google Ads</div><div class="rnum">204</div><div class="rnum">8</div><div class="rrate" style="color:#f87171">3.9%</div><div class="rbc"><div class="rmb" style="width:8px;background:#f87171"></div></div></div>
             <div style="margin-top:16px;padding:14px;background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.15);border-radius:8px">
-              <div style="font-size:11px;color:var(--grn);font-weight:700;margin-bottom:4px">💡 Intelligence Insight</div>
-              <div style="font-size:11.5px;color:var(--cream2);line-height:1.55">Physician referrals convert at 9x the rate of digital ads. Shifting 20% of your ad budget toward physician outreach could yield an estimated <strong style="color:var(--grn)">+14 additional enrollments</strong> this quarter.</div>
+              <div style="font-size:11px;color:var(--grn);font-weight:700;margin-bottom:4px">💡 Sponsor Intelligence Alert</div>
+              <div style="font-size:11.5px;color:var(--cream2);line-height:1.55">Physician referrals convert at 9x the rate of digital ads across this network. Reallocating 20% of ad spend toward physician outreach programs could yield an estimated <strong style="color:var(--grn)">+14 additional enrollments</strong> this quarter.</div>
             </div>
           </div>
         </div>
@@ -627,47 +698,50 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
   </div>
 </section>
 
+<!-- HOW IT WORKS -->
 <section class="how" id="how">
   <div class="ctr">
     <div style="text-align:center;margin-bottom:64px">
       <div class="slbl reveal" style="justify-content:center">How It Works</div>
-      <h2 class="stitle reveal" style="text-align:center">One system.<br><em>Complete visibility.</em></h2>
-      <p class="sbody reveal" style="max-width:500px;margin:0 auto;text-align:center">Built around a single design principle — doing the work correctly and generating clean data are the same action.</p>
+      <h2 class="stitle reveal" style="text-align:center">Designed so doing the work<br><em>produces the intelligence.</em></h2>
+      <p class="sbody reveal" style="max-width:520px;margin:0 auto;text-align:center">The core principle: a coordinator logs an interaction and the analytics update automatically. No separate reporting step. No manual exports. The data builds itself.</p>
     </div>
     <div class="howg">
-      <div class="hwc reveal"><div class="hws">01 / CAPTURE</div><div class="hwi">🎯</div><h3 class="hwt">One Patient Profile. Forever.</h3><p class="hwb">Every lead enters as a universal patient record — not a study record. Referred to a second study six months later? Full history instantly. No duplicates, no lost context.</p></div>
-      <div class="hwc reveal"><div class="hws">02 / TRACK</div><div class="hwi">📋</div><h3 class="hwt">Append-Only History.</h3><p class="hwb">Every status change is a recorded event — never overwritten. The full timeline is always there. This single architectural decision is what makes real funnel analytics possible.</p></div>
-      <div class="hwc reveal"><div class="hws">03 / ANALYZE</div><div class="hwi">🔮</div><h3 class="hwt">Intelligence, Not Reports.</h3><p class="hwb">Enrollment forecasts, conversion rates, referral ROI, and speed metrics update automatically as work happens. Leadership's questions answer themselves. No exports. No waiting.</p></div>
+      <div class="hwc reveal"><div class="hws">01 / CAPTURE</div><div class="hwi">🎯</div><h3 class="hwt">One Patient. Every Study.</h3><p class="hwb">Every lead enters as a universal patient record — not a study-specific record. When a patient is referred to a second or third study, the full prior history is immediately visible. No duplicate records. No lost context. No starting from scratch.</p></div>
+      <div class="hwc reveal"><div class="hws">02 / TRACK</div><div class="hwi">📋</div><h3 class="hwt">Every Transition Preserved.</h3><p class="hwb">Every status change is a timestamped event in an append-only record. Nothing is overwritten. Sponsors and operations teams can see conversion rates, time-in-stage, and drop-off points going back to day one — because the history was never deleted.</p></div>
+      <div class="hwc reveal"><div class="hws">03 / FORECAST</div><div class="hwi">🔮</div><h3 class="hwt">Intelligence Before It's Asked For.</h3><p class="hwb">Enrollment forecasts, site benchmarks, referral ROI, and speed metrics update continuously. Sponsors see risk before it becomes a missed milestone. Sites see exactly what they need to do. Everyone operates on the same live data.</p></div>
     </div>
   </div>
 </section>
 
+<!-- FEATURES -->
 <section class="features" id="features">
   <div class="ctr">
     <div class="fhdr">
       <div class="slbl reveal" style="justify-content:center">Full Feature Set</div>
-      <h2 class="stitle reveal" style="text-align:center">Everything a site needs.<br><em>Nothing they don't.</em></h2>
-      <p class="sbody reveal" style="max-width:480px;margin:0 auto">Every feature passes one test: does this make the coordinator's job simpler AND give the analyst better data?</p>
+      <h2 class="stitle reveal" style="text-align:center">Built for every role.<br><em>Useful from day one.</em></h2>
+      <p class="sbody reveal" style="max-width:500px;margin:0 auto">Every feature serves two purposes: reducing coordinator burden and generating better data for sponsors, CROs, and operations teams — simultaneously.</p>
     </div>
     <div class="fgrid reveal">
-      <div class="fc"><span class="fci">🧠</span><div class="fct">Enrollment Predictor</div><p class="fcb">AI-powered forecasting based on your site's actual conversion history — not industry averages. Know how many leads you need before the quarter starts.</p></div>
-      <div class="fc"><span class="fci">👤</span><div class="fct">Universal Patient Profile</div><p class="fcb">One record per patient across all studies and sites. Full interaction history, visit log, status timeline, and study branches — never duplicated.</p></div>
-      <div class="fc"><span class="fci">📊</span><div class="fct">Live Funnel Dashboards</div><p class="fcb">Real-time visibility into every recruitment stage, filterable by site, study, date, referral source, and coordinator. Always current.</p></div>
-      <div class="fc"><span class="fci">🔗</span><div class="fct">CTMS Integration Ready</div><p class="fcb">Open API architecture connects to any CTMS. Enrolliq sits as the recruitment intelligence layer — compatible with what you already use.</p></div>
-      <div class="fc"><span class="fci">📡</span><div class="fct">Referral Intelligence</div><p class="fcb">Which sources bring the best patients — not just the most leads. Conversion rates and enrollment cost broken down by every source.</p></div>
-      <div class="fc"><span class="fci">⚡</span><div class="fct">Speed Metrics</div><p class="fcb">Time-to-first-contact, contact-to-screen velocity, response rates. See exactly where leads go cold before they drop out of the pipeline.</p></div>
-      <div class="fc"><span class="fci">🧪</span><div class="fct">Pre-Screening Engine</div><p class="fcb">Configurable eligibility questionnaires per study. Stop unqualified leads before they take appointment slots — every outcome logged automatically.</p></div>
-      <div class="fc"><span class="fci">💬</span><div class="fct">Integrated Communications</div><p class="fcb">Send SMS and email from the patient profile. Every message auto-logged to the interaction timeline. No copy-pasting into a separate CRM.</p></div>
-      <div class="fc"><span class="fci">🏥</span><div class="fct">Multi-Site Network Control</div><p class="fcb">Network admins see everything. Site admins see their sites. Recruiters see their patients. Role-based access that matches how your org actually works.</p></div>
+      <div class="fc"><span class="fci">🔮</span><div class="fct">Enrollment Forecasting</div><p class="fcb">AI-powered projections based on each site's actual historical conversion rates. Sponsors know months in advance whether a study is on track — not weeks after it falls behind.</p></div>
+      <div class="fc"><span class="fci">👤</span><div class="fct">Universal Patient Profile</div><p class="fcb">One record per patient across all studies and all sites. Full interaction history, visit log, and complete status timeline — preserved forever, never overwritten.</p></div>
+      <div class="fc"><span class="fci">📊</span><div class="fct">Live Funnel Dashboards</div><p class="fcb">Real-time sponsor and site director views into every recruitment stage, filterable by site, study, date, referral source, and coordinator. Always current.</p></div>
+      <div class="fc"><span class="fci">🔗</span><div class="fct">CTMS Integration Layer</div><p class="fcb">Open API designed to connect with existing CTMS platforms. Enrolliq handles the recruitment and pre-enrollment layer — compatible with the clinical systems sites already use.</p></div>
+      <div class="fc"><span class="fci">📡</span><div class="fct">Referral Source Intelligence</div><p class="fcb">Full conversion and ROI breakdown by every referral source — not just lead volume. Sponsors and site directors see which channels produce enrolled patients, not just inquiries.</p></div>
+      <div class="fc"><span class="fci">⚡</span><div class="fct">Speed & Response Metrics</div><p class="fcb">Time-to-first-contact, contact-to-screen velocity, no-show rates. Identify where patients disengage before they drop out of the funnel entirely.</p></div>
+      <div class="fc"><span class="fci">🧪</span><div class="fct">Configurable Pre-Screener</div><p class="fcb">Study-specific eligibility questionnaires built by coordinators or operations teams. Every outcome — pass, fail, reason — is automatically logged and included in sponsor analytics.</p></div>
+      <div class="fc"><span class="fci">💬</span><div class="fct">Integrated Communications</div><p class="fcb">SMS and email sent directly from the patient profile. Every message auto-logged to the interaction timeline — full communication history for every patient, always accessible.</p></div>
+      <div class="fc"><span class="fci">🏥</span><div class="fct">Multi-Site Network Control</div><p class="fcb">Network admins see everything. Site directors see their sites. Coordinators see their patients. Sponsor views configured per study. Role-based access that matches real org structures.</p></div>
     </div>
   </div>
 </section>
 
+<!-- INTEGRATIONS -->
 <section class="integrations" id="integrations">
   <div class="ctr">
     <div class="slbl reveal" style="justify-content:center">Integration Architecture</div>
-    <h2 class="stitle reveal" style="text-align:center">Works with your<br><em>existing stack.</em></h2>
-    <p class="sbody reveal" style="max-width:500px;margin:0 auto;text-align:center">Enrolliq is a recruitment intelligence layer — not a replacement for your CTMS. Open API connects to whatever clinical system your sites already use.</p>
+    <h2 class="stitle reveal" style="text-align:center">Fits into your<br><em>existing workflow.</em></h2>
+    <p class="sbody reveal" style="max-width:520px;margin:0 auto;text-align:center">Enrolliq is designed as a recruitment intelligence layer that sits alongside your CTMS — not as a replacement. An open API connects to whatever clinical systems your sites and sponsors already use.</p>
     <div class="ig reveal">
       <div class="ib dim"><div class="idot"></div>CRIO</div>
       <div class="ib dim"><div class="idot"></div>REDCap</div>
@@ -683,6 +757,7 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
   </div>
 </section>
 
+<!-- FOUNDER -->
 <section class="founder" id="founder">
   <div class="ctr">
     <div class="fcard reveal">
@@ -691,15 +766,18 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
         <div class="fn">Vasanth Manne</div>
         <div class="fr">Founder · Enrolliq</div>
         <div class="ftags">
-          <span class="ftag">Data Engineer</span><span class="ftag">Clinical Research</span>
-          <span class="ftag">Pipeline Builder</span><span class="ftag">Software Builder</span><span class="ftag">Site Operations</span>
+          <span class="ftag">Data Engineer</span>
+          <span class="ftag">Clinical Research</span>
+          <span class="ftag">Pipeline Architecture</span>
+          <span class="ftag">Healthcare Data</span>
+          <span class="ftag">Product Builder</span>
         </div>
       </div>
       <div>
-        <p class="fq">I'm not a doctor or a researcher. I'm the person who handles the data — and I started noticing things that didn't add up.</p>
-        <p class="fb">I'm a Data Engineer, building the ETL pipelines and analytics layers that power enrollment reporting across multi-site clinical trials. My job is to answer the questions leadership asks about recruitment — and for a long time, that meant days of manual work pulling from four different systems.<br><br>I started building Enrolliq because the problem I kept running into wasn't a hard technical problem. It was an architectural one. Nobody had designed patient tracking from a data-first perspective. So I decided to build it.</p>
+        <p class="fq">I work in clinical research data. I got curious about why the enrollment problem was so persistent — and realized it was an architectural issue nobody had approached from a data-first perspective.</p>
+        <p class="fb">I'm a Data Engineer with a background in building ETL pipelines, analytics layers, and reporting infrastructure across healthcare. Working in clinical research data gave me a close view of the operational side of recruitment — specifically the gap between the data that exists inside these systems and the data that sponsors, site directors, and operations teams actually need to make timely decisions.<br><br>The patterns I kept encountering are well-documented across industry research: status history that gets overwritten, patient records that don't persist across studies, and workflows that vary enough between sites to make cross-network benchmarking nearly impossible. These are architectural problems — and architectural problems have architectural solutions.<br><br>That's what I'm building with Enrolliq. A recruitment intelligence layer designed from first principles: append-only history, universal patient identity, standardized workflows, and live analytics that emerge from the work rather than requiring a separate reporting effort.</p>
         <div class="fls">
-          <a href="https://www.linkedin.com/pulse/im-data-engineer-healthcare-heres-industry-problem-made-vasanth-manne-drooe/" target="_blank" class="btno" style="padding:10px 20px;font-size:13px">LinkedIn →</a>
+          <a href="https://linkedin.com/in/vasanthmanne" target="_blank" class="btno" style="padding:10px 20px;font-size:13px">LinkedIn →</a>
           <a href="#waitlist" class="btng" style="padding:10px 20px;font-size:13px">Get Early Access</a>
         </div>
       </div>
@@ -707,17 +785,18 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
   </div>
 </section>
 
+<!-- WAITLIST -->
 <section class="waitlist" id="waitlist">
   <div class="ctr">
     <div class="slbl reveal" style="justify-content:center">Early Access</div>
-    <h2 class="reveal">Be first.<br><em>Shape what gets built.</em></h2>
-    <p class="wlsub reveal">Enrolliq is in active development. Join the waitlist — especially if you work in clinical research operations or data.</p>
+    <h2 class="reveal">Help shape<br><em>what gets built.</em></h2>
+    <p class="wlsub reveal">Enrolliq is in active development. Early access is open — especially for sponsors, CROs, site directors, and operations teams who want to be involved in the product direction.</p>
     <div id="wlwrap" class="reveal">
       <form class="wlf" onsubmit="handleWL(event)">
         <input type="email" class="wli" placeholder="your@email.com" required id="wlemail">
-        <button type="submit" class="wls">Join Waitlist</button>
+        <button type="submit" class="wls">Request Access</button>
       </form>
-      <p class="wln">No spam. No sales calls. Just updates when it matters.</p>
+      <p class="wln">No spam. No sales calls. Updates only when something meaningful is ready.</p>
     </div>
     <div class="wlok" id="wlok">✓ You're on the list. We'll be in touch when early access opens.</div>
   </div>
@@ -728,13 +807,13 @@ footer{border-top:1px solid var(--bdr);padding:48px 0;text-align:center}
     <div class="ftlo">Enroll<span>iq</span></div>
     <div class="fttag">Recruitment Intelligence for Clinical Trials</div>
     <ul class="ftlinks">
-      <li><a href="#problem">Problem</a></li>
+      <li><a href="#problem">The Problem</a></li>
       <li><a href="#screens">Platform</a></li>
       <li><a href="#how">How It Works</a></li>
       <li><a href="#founder">About</a></li>
       <li><a href="#waitlist">Early Access</a></li>
     </ul>
-    <div class="ftcopy">© 2025 Enrolliq · Built by a data engineer who got tired of waiting.</div>
+    <div class="ftcopy">© 2025 Enrolliq · Designed to close the gap between clinical research operations and the intelligence sponsors need.</div>
   </div>
 </footer>
 
